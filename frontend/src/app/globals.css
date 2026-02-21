@@ -11,11 +11,14 @@
 @layer base {
   * {
     font-family: var(--font-serif), ui-serif, Georgia, Cambria, serif;
+    border-color: hsl(var(--border));
   }
 
   body {
     font-weight: var(--font-normal);
     font-variation-settings: "opsz" 12;
+    color: hsl(var(--foreground));
+    background-color: hsl(var(--background));
   }
 
   :root {
@@ -56,25 +59,25 @@
     --radius: 0.5rem;
   }
   .dark {
-    --background: 0 0% 5%;
-    --foreground: 0 0% 95%;
-    --card: 0 0% 7%;
-    --card-foreground: 0 0% 95%;
-    --popover: 0 0% 7%;
-    --popover-foreground: 0 0% 95%;
-    --primary: 0 0% 95%;
-    --primary-foreground: 0 0% 9%;
-    --secondary: 0 0% 12%;
-    --secondary-foreground: 0 0% 95%;
-    --muted: 0 0% 12%;
-    --muted-foreground: 0 0% 55%;
-    --accent: 0 0% 12%;
-    --accent-foreground: 0 0% 95%;
+    --background: 200 5% 10%;
+    --foreground: 60 5% 90%;
+    --card: 200 5% 12%;
+    --card-foreground: 60 5% 90%;
+    --popover: 200 5% 12%;
+    --popover-foreground: 60 5% 90%;
+    --primary: 60 5% 90%;
+    --primary-foreground: 200 5% 10%;
+    --secondary: 200 4% 16%;
+    --secondary-foreground: 60 5% 90%;
+    --muted: 200 4% 16%;
+    --muted-foreground: 200 3% 55%;
+    --accent: 200 4% 16%;
+    --accent-foreground: 60 5% 90%;
     --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 0 0% 95%;
-    --border: 0 0% 9%;
-    --input: 0 0% 9%;
-    --ring: 0 0% 60%;
+    --destructive-foreground: 60 5% 90%;
+    --border: 200 4% 18%;
+    --input: 200 4% 18%;
+    --ring: 200 3% 40%;
     --chart-1: 220 70% 50%;
     --chart-2: 160 60% 45%;
     --chart-3: 30 80% 55%;

@@ -8,6 +8,9 @@ const config: Config = {
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
+  	borderColor: {
+  		DEFAULT: 'hsl(var(--border))',
+  	},
   	extend: {
   		fontFamily: {
   			serif: ['var(--font-serif)', 'ui-serif', 'Georgia', 'Cambria', 'serif'],

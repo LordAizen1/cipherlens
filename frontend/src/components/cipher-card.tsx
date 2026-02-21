@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/dialog";
 import { CipherInfo, FAMILY_COLORS, type CipherFamily } from "@/lib/types";
 import { Key, AlertTriangle, FileCode2 } from "lucide-react";
+import { LaTeX } from "@/components/latex";
 
 interface CipherCardProps {
   cipher: CipherInfo;
@@ -60,7 +61,7 @@ export function CipherCard({ cipher }: CipherCardProps) {
               <FileCode2 className="h-3 w-3" />
               Formula
             </div>
-            <code className="text-sm">{cipher.formula}</code>
+            <LaTeX math={cipher.formula} className="text-sm" />
           </div>
 
           <div className="grid grid-cols-2 gap-3 text-sm">

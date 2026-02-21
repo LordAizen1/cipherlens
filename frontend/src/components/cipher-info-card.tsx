@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { useCipherStore } from "@/hooks/use-cipher-store";
 import { CIPHER_DATA } from "@/lib/constants";
 import { BookOpen, AlertTriangle, Key, FileCode2 } from "lucide-react";
+import { LaTeX } from "@/components/latex";
 
 export function CipherInfoCard() {
   const { result } = useCipherStore();
@@ -40,7 +41,7 @@ export function CipherInfoCard() {
               <FileCode2 className="h-3 w-3" />
               Formula
             </div>
-            <code className="text-sm">{cipher.formula}</code>
+            <LaTeX math={cipher.formula} className="text-sm" />
           </div>
 
           {/* Details grid */}

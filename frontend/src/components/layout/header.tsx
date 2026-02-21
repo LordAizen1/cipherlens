@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Shield, Menu, X } from "lucide-react";
+import { ScanEye, Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { AnimatedThemeToggler } from "@/components/ui/animated-theme-toggler";
 import { cn } from "@/lib/utils";
@@ -22,7 +22,7 @@ export function Header() {
     <header className="sticky top-0 z-50 w-full border-b bg-background/80 backdrop-blur-sm">
       <div className="mx-auto flex h-14 max-w-6xl items-center justify-between px-4">
         <Link href="/" className="flex items-center gap-2 font-semibold">
-          <Shield className="h-5 w-5" />
+          <ScanEye className="h-5 w-5" />
           <span className="hidden sm:inline">CipherLens</span>
         </Link>
 
