@@ -1,0 +1,146 @@
+"use client";
+
+import { motion, AnimatePresence } from "framer-motion";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Separator } from "@/components/ui/separator";
+import { Skeleton } from "@/components/ui/skeleton";
+import { ConfidenceBar } from "@/components/confidence-bar";
+import { useCipherStore } from "@/hooks/use-cipher-store";
+import { FAMILY_COLORS, type CipherFamily } from "@/lib/types";
+import { Trophy, ListOrdered, Clock, Cpu } from "lucide-react";
+import { NumberTicker } from "@/components/ui/number-ticker";
+
+export function PredictionResults() {
+  const { result, isAnalyzing } = useCipherStore();
+
+  if (isAnalyzing) {
+    return (
+      <Card>
+        <CardHeader className="pb-3">
+          <CardTitle className="flex items-center gap-2 text-lg">
+            <Trophy className="h-5 w-5" />
+            Results
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <Skeleton className="h-16 w-full" />
+          <Skeleton className="h-8 w-3/4" />
+          <Skeleton className="h-8 w-1/2" />
+          <Skeleton className="h-8 w-2/3" />
+        </CardContent>
+      </Card>
+    );
+  }
+
+  if (!result) {
+    return (
+      <Card>
+        <CardHeader className="pb-3">
+          <CardTitle className="flex items-center gap-2 text-lg text-muted-foreground">
+            <Trophy className="h-5 w-5" />
+            Results
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <p className="text-sm text-muted-foreground">
+            Paste some ciphertext and click Analyze to see predictions.
+          </p>
+        </CardContent>
+      </Card>
+    );
+  }
+
+  const { top_prediction, all_predictions, model_used, inference_time_ms } = result;
+  const familyColor =
+    FAMILY_COLORS[top_prediction.cipher_family as CipherFamily] || "";
+
+  return (
+    <AnimatePresence mode="wait">
+      <motion.div
+        key={result.request_id}
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.3 }}
+      >
+        <Card>
+          <CardHeader className="pb-3">
+            <div className="flex items-center justify-between">
+              <CardTitle className="flex items-center gap-2 text-lg">
+                <Trophy className="h-5 w-5" />
+                Results
+              </CardTitle>
+              <div className="flex items-center gap-3 text-xs text-muted-foreground">
+                <span className="flex items-center gap-1">
+                  <Cpu className="h-3 w-3" />
+                  {model_used}
+                </span>
+                <span className="flex items-center gap-1">
+                  <Clock className="h-3 w-3" />
+                  {inference_time_ms}ms
+                </span>
+              </div>
+            </div>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            {/* Top prediction */}
+            <div className="rounded-lg border bg-accent/30 p-4">
+              <div className="mb-2 flex items-center justify-between">
+                <div>
+                  <h3 className="text-2xl font-bold">{top_prediction.cipher_name}</h3>
+                  <Badge className={familyColor} variant="secondary">
+                    {top_prediction.cipher_family}
+                  </Badge>
+                </div>
+                <div className="text-right">
+                  <div className="text-3xl font-bold tabular-nums">
+                    <NumberTicker
+                      value={Math.round(top_prediction.confidence * 100)}
+                      className="text-3xl font-bold"
+                    />
+                    <span className="text-lg text-muted-foreground">%</span>
+                  </div>
+                  <span className="text-xs text-muted-foreground">confidence</span>
+                </div>
+              </div>
+              <ConfidenceBar confidence={top_prediction.confidence} size="lg" showLabel={false} />
+            </div>
+
+            <Separator />
+
+            {/* All predictions */}
+            <div>
+              <h4 className="mb-3 flex items-center gap-2 text-sm font-medium">
+                <ListOrdered className="h-4 w-4" />
+                All Predictions
+              </h4>
+              <div className="space-y-2">
+                {all_predictions.map((pred, i) => (
+                  <motion.div
+                    key={pred.cipher_name}
+                    initial={{ opacity: 0, x: -10 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: i * 0.05 }}
+                    className="flex items-center gap-3"
+                  >
+                    <span className="w-5 text-xs font-medium text-muted-foreground">
+                      {i + 1}.
+                    </span>
+                    <span className="w-36 truncate text-sm font-medium">
+                      {pred.cipher_name}
+                    </span>
+                    <ConfidenceBar
+                      confidence={pred.confidence}
+                      className="flex-1"
+                      size="sm"
+                    />
+                  </motion.div>
+                ))}
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      </motion.div>
+    </AnimatePresence>
+  );
+}
