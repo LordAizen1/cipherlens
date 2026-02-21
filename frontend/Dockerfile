@@ -9,6 +9,8 @@ FROM node:20-alpine AS builder
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
+# Enable standalone output for Docker builds
+RUN sed -i 's/const nextConfig = {};/const nextConfig = { output: "standalone" };/' next.config.mjs
 RUN npm run build
 
 # ── Stage 3: Production image ───────────────────────────────────────
