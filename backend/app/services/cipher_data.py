@@ -1,0 +1,26 @@
+CIPHER_CATALOG: list[dict] = [
+    {"name": "Caesar", "family": "Monoalphabetic Substitution"},
+    {"name": "Affine", "family": "Monoalphabetic Substitution"},
+    {"name": "Atbash", "family": "Monoalphabetic Substitution"},
+    {"name": "Vigenere", "family": "Polyalphabetic Substitution"},
+    {"name": "Autokey", "family": "Polyalphabetic Substitution"},
+    {"name": "Beaufort", "family": "Polyalphabetic Substitution"},
+    {"name": "Porta", "family": "Polyalphabetic Substitution"},
+    {"name": "Columnar Transposition", "family": "Transposition"},
+    {"name": "Playfair", "family": "Polygraphic Substitution"},
+    {"name": "Hill", "family": "Polygraphic Substitution"},
+    {"name": "Four-Square", "family": "Polygraphic Substitution"},
+    {"name": "Bifid", "family": "Fractionating"},
+    {"name": "Trifid", "family": "Fractionating"},
+    {"name": "ADFGX", "family": "Fractionating"},
+    {"name": "ADFGVX", "family": "Fractionating"},
+    {"name": "Nihilist", "family": "Fractionating"},
+    {"name": "TEA", "family": "Modern Block"},
+    {"name": "XTEA", "family": "Modern Block"},
+    {"name": "Lucifer", "family": "Modern Block"},
+    {"name": "LOKI", "family": "Modern Block"},
+    {"name": "MISTY1", "family": "Modern Block"},
+    {"name": "Polybius Square", "family": "Numeric"},
+]
+
+FAMILY_NAMES: list[str] = sorted({c["family"] for c in CIPHER_CATALOG})

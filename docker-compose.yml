@@ -12,20 +12,19 @@ services:
       - NEXT_TELEMETRY_DISABLED=1
     restart: unless-stopped
 
-  # ── Backend (uncomment when FastAPI service is ready) ──────────────
-  # backend:
-  #   build:
-  #     context: ./backend
-  #     dockerfile: Dockerfile
-  #   ports:
-  #     - "8000:8000"
-  #   environment:
-  #     - ENVIRONMENT=production
-  #   depends_on:
-  #     - redis
-  #     - postgres
-  #   restart: unless-stopped
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    environment:
+      - ENVIRONMENT=production
+      - USE_MOCK_MODEL=true
+      - CORS_ORIGINS=["http://localhost:3000"]
+    restart: unless-stopped
 
+  # ── Uncomment when databases are needed ─────────────────────────────
   # redis:
   #   image: redis:7-alpine
   #   ports:
