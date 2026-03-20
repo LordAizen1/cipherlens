@@ -21,7 +21,7 @@ services:
     environment:
       - ENVIRONMENT=production
       - USE_MOCK_MODEL=true
-      - CORS_ORIGINS=["http://localhost:3000"]
+      - CORS_ORIGINS=${CORS_ORIGINS:-["http://localhost:3000"]}
     restart: unless-stopped
 
   # ── Uncomment when databases are needed ─────────────────────────────
