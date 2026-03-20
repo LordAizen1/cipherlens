@@ -9,7 +9,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useCipherStore } from "@/hooks/use-cipher-store";
 import { predictCipher } from "@/lib/api";
@@ -21,8 +20,6 @@ export function CipherInput() {
   const {
     ciphertext,
     setCiphertext,
-    modelType,
-    setModelType,
     isAnalyzing,
     setIsAnalyzing,
     setResult,
@@ -42,7 +39,7 @@ export function CipherInput() {
     try {
       const result = await predictCipher({
         ciphertext,
-        model_type: modelType,
+        model_type: "hierarchical",
         confidence_threshold: 0.1,
         include_features: true,
       });
@@ -102,25 +99,6 @@ export function CipherInput() {
             ))}
           </SelectContent>
         </Select>
-
-        {/* Model type toggle */}
-        <div className="flex items-center gap-2">
-          <span className="text-sm text-muted-foreground">Model:</span>
-          <Badge
-            variant={modelType === "hierarchical" ? "default" : "outline"}
-            className="cursor-pointer"
-            onClick={() => setModelType("hierarchical")}
-          >
-            Hierarchical
-          </Badge>
-          <Badge
-            variant={modelType === "unified" ? "default" : "outline"}
-            className="cursor-pointer"
-            onClick={() => setModelType("unified")}
-          >
-            Unified
-          </Badge>
-        </div>
 
         {/* Action buttons */}
         <div className="flex gap-2">

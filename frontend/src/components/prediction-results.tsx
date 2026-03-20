@@ -9,6 +9,7 @@ import { ConfidenceBar } from "@/components/confidence-bar";
 import { useCipherStore } from "@/hooks/use-cipher-store";
 import { FAMILY_COLORS, type CipherFamily } from "@/lib/types";
 import { Trophy, ListOrdered, Clock, Cpu } from "lucide-react";
+import { MorphingText } from "@/components/ui/morphing-text";
 import { NumberTicker } from "@/components/ui/number-ticker";
 
 export function PredictionResults() {
@@ -35,17 +36,18 @@ export function PredictionResults() {
 
   if (!result) {
     return (
-      <Card>
+      <Card className="flex h-full flex-col">
         <CardHeader className="pb-3">
           <CardTitle className="flex items-center gap-2 text-lg text-muted-foreground">
             <Trophy className="h-5 w-5" />
             Results
           </CardTitle>
         </CardHeader>
-        <CardContent>
-          <p className="text-sm text-muted-foreground">
-            Paste some ciphertext and click Analyze to see predictions.
-          </p>
+        <CardContent className="flex flex-1 items-center justify-center">
+          <MorphingText
+            texts={["Awaiting Ciphertext...", "Ready To Decode...", "Paste & Analyze...", "Identify The Cipher..."]}
+            className="h-8 w-64 text-base font-medium text-muted-foreground whitespace-nowrap md:h-8 lg:text-base"
+          />
         </CardContent>
       </Card>
     );

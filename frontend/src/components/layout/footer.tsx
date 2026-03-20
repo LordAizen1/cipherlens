@@ -1,15 +1,19 @@
+import { Github } from "lucide-react";
+
 export function Footer() {
   return (
-    <footer className="border-t py-6">
-      <div className="mx-auto max-w-6xl px-4 text-center text-sm text-muted-foreground">
-        <p>
-          Classical Cipher Identification System &mdash; BTP Spring 2026, IIIT
-          Delhi
-        </p>
-        <p className="mt-1">
-          Dhruv Verma &middot; Maulik Mahey &middot; Md Kaif &middot; Sweta
-          Snigdha &mdash; Supervised by Dr. Ravi Anand
-        </p>
+    <footer className="border-t py-4">
+      <div className="mx-auto flex max-w-6xl items-center justify-between px-4 text-sm text-muted-foreground">
+        <p>CipherLens &middot; IIIT Delhi</p>
+        <a
+          href="https://github.com/LordAizen1/cipherlens"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="flex items-center gap-1.5 transition-colors hover:text-foreground"
+        >
+          <Github className="h-4 w-4" />
+          GitHub
+        </a>
       </div>
     </footer>
   );

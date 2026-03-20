@@ -23,19 +23,19 @@ export default function Home() {
       </BlurFade>
 
       <div className="grid gap-6 lg:grid-cols-[400px_1fr]">
-        {/* Left — Input */}
-        <div>
-          <BlurFade delay={0.2}>
-            <CipherInput />
-          </BlurFade>
-        </div>
+        {/* Row 1: Input + Results (same height) */}
+        <BlurFade delay={0.2}>
+          <CipherInput />
+        </BlurFade>
+        <BlurFade delay={0.3} className="h-full">
+          <PredictionResults />
+        </BlurFade>
 
-        {/* Right — Results */}
-        <div className="space-y-6">
-          <BlurFade delay={0.3}>
-            <PredictionResults />
-          </BlurFade>
+        {/* Row 2+: Right-side only */}
+        <div className="lg:col-start-2">
           <FeatureAnalysis />
+        </div>
+        <div className="lg:col-start-2">
           <CipherInfoCard />
         </div>
       </div>

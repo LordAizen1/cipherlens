@@ -10,6 +10,7 @@ import {
   Database,
   BarChart3,
   Cpu,
+  Github,
 } from "lucide-react";
 
 const PIPELINE_STEPS = [
@@ -20,10 +21,10 @@ const PIPELINE_STEPS = [
 ];
 
 const TEAM = [
-  { name: "Dhruv Verma", roll: "2022172" },
-  { name: "Maulik Mahey", roll: "2022282" },
-  { name: "Md Kaif", roll: "2022289" },
-  { name: "Sweta Snigdha", roll: "2022527" },
+  { name: "Dhruv Verma", roll: "2022172", github: "https://github.com/" },
+  { name: "Maulik Mahey", roll: "2022282", github: "https://github.com/maulik-dot" },
+  { name: "Md Kaif", roll: "2022289", github: "https://github.com/LordAizen1" },
+  { name: "Sweta Snigdha", roll: "2022527", github: "https://github.com/cypherei00" },
 ];
 
 const CIPHER_TABLE = [
@@ -163,8 +164,18 @@ export default function AboutPage() {
           <CardContent>
             <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
               {TEAM.map((member) => (
-                <div key={member.roll} className="text-center">
-                  <div className="text-sm font-medium">{member.name}</div>
+                <div key={member.roll} className="flex flex-col items-center gap-1 text-center">
+                  <div className="flex items-center gap-1.5 text-sm font-medium">
+                    <a
+                      href={member.github}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-muted-foreground transition-colors hover:text-foreground"
+                    >
+                      <Github className="h-4 w-4" />
+                    </a>
+                    {member.name}
+                  </div>
                   <div className="text-xs text-muted-foreground">
                     {member.roll}
                   </div>
