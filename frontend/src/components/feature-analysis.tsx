@@ -131,40 +131,50 @@ export function FeatureAnalysis() {
           {/* Feature importance chart */}
           <div>
             <h4 className="mb-2 text-sm font-medium">Feature Importance</h4>
-            <div className="h-56">
-              <ResponsiveContainer width="100%" height="100%">
-                <BarChart
-                  data={chartData}
-                  layout="vertical"
-                  margin={{ left: 0, right: 10, top: 5, bottom: 5 }}
-                >
-                  <XAxis type="number" hide />
-                  <YAxis
-                    type="category"
-                    dataKey="name"
-                    width={120}
-                    tick={{ fontSize: 11, fill: "hsl(var(--foreground))" }}
-                  />
-                  <Tooltip
-                    formatter={(value) => `${value}%`}
-                    contentStyle={{
-                      borderRadius: "8px",
-                      border: "1px solid hsl(var(--border))",
-                      backgroundColor: "hsl(var(--card))",
-                      color: "hsl(var(--foreground))",
-                    }}
-                  />
-                  <Bar dataKey="value" radius={[0, 4, 4, 0]}>
-                    {chartData.map((_, i) => (
-                      <Cell
-                        key={i}
-                        fill={CHART_COLORS[i % CHART_COLORS.length]}
-                      />
-                    ))}
-                  </Bar>
-                </BarChart>
-              </ResponsiveContainer>
-            </div>
+            {chartData.length > 0 ? (
+              <div className="h-56">
+                <ResponsiveContainer width="100%" height="100%">
+                  <BarChart
+                    data={chartData}
+                    layout="vertical"
+                    margin={{ left: 0, right: 10, top: 5, bottom: 5 }}
+                  >
+                    <XAxis type="number" hide />
+                    <YAxis
+                      type="category"
+                      dataKey="name"
+                      width={120}
+                      tick={{ fontSize: 11, fill: "hsl(var(--foreground))" }}
+                    />
+                    <Tooltip
+                      formatter={(value) => `${value}%`}
+                      contentStyle={{
+                        borderRadius: "8px",
+                        border: "1px solid hsl(var(--border))",
+                        backgroundColor: "hsl(var(--card))",
+                        color: "hsl(var(--foreground))",
+                      }}
+                    />
+                    <Bar dataKey="value" radius={[0, 4, 4, 0]}>
+                      {chartData.map((_, i) => (
+                        <Cell
+                          key={i}
+                          fill={CHART_COLORS[i % CHART_COLORS.length]}
+                        />
+                      ))}
+                    </Bar>
+                  </BarChart>
+                </ResponsiveContainer>
+              </div>
+            ) : (
+              <div className="flex h-56 flex-col items-center justify-center rounded-md border border-dashed text-center text-sm text-muted-foreground p-6">
+                <Activity className="mb-2 h-8 w-8 opacity-20" />
+                <p>This model processes raw character tokens.</p>
+                <p className="mt-1 text-xs opacity-70">
+                  It uses learned spatial filters rather than relying on extracted statistical features, so explicit mathematical feature importance is not available.
+                </p>
+              </div>
+            )}
           </div>
         </CardContent>
       </Card>

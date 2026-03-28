@@ -4,8 +4,8 @@ import { PredictionResponse } from "@/lib/types";
 interface CipherStore {
   ciphertext: string;
   setCiphertext: (text: string) => void;
-  modelType: "hierarchical" | "unified";
-  setModelType: (type: "hierarchical" | "unified") => void;
+  modelType: "hierarchical" | "unified" | "deep_learning" | "hybrid";
+  setModelType: (type: "hierarchical" | "unified" | "deep_learning" | "hybrid") => void;
   confidenceThreshold: number;
   setConfidenceThreshold: (threshold: number) => void;
   showFeatures: boolean;
@@ -19,7 +19,7 @@ interface CipherStore {
 export const useCipherStore = create<CipherStore>((set) => ({
   ciphertext: "",
   setCiphertext: (text) => set({ ciphertext: text }),
-  modelType: "hierarchical",
+  modelType: "hybrid",
   setModelType: (type) => set({ modelType: type }),
   confidenceThreshold: 0.6,
   setConfidenceThreshold: (threshold) => set({ confidenceThreshold: threshold }),

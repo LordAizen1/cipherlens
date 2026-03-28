@@ -4,6 +4,7 @@ export const CIPHER_DATA: CipherInfo[] = [
   // ── Monoalphabetic Substitution ──────────────────────────────────────
   {
     name: "Caesar",
+    slug: "caesar",
     family: "Monoalphabetic Substitution",
     familySlug: "monoalphabetic",
     description:
@@ -23,6 +24,7 @@ export const CIPHER_DATA: CipherInfo[] = [
   },
   {
     name: "Affine",
+    slug: "affine",
     family: "Monoalphabetic Substitution",
     familySlug: "monoalphabetic",
     description:
@@ -42,6 +44,7 @@ export const CIPHER_DATA: CipherInfo[] = [
   },
   {
     name: "Atbash",
+    slug: "atbash",
     family: "Monoalphabetic Substitution",
     familySlug: "monoalphabetic",
     description:
@@ -63,6 +66,7 @@ export const CIPHER_DATA: CipherInfo[] = [
   // ── Polyalphabetic Substitution ──────────────────────────────────────
   {
     name: "Vigenere",
+    slug: "vigenere",
     family: "Polyalphabetic Substitution",
     familySlug: "polyalphabetic",
     description:
@@ -82,6 +86,7 @@ export const CIPHER_DATA: CipherInfo[] = [
   },
   {
     name: "Autokey",
+    slug: "autokey",
     family: "Polyalphabetic Substitution",
     familySlug: "polyalphabetic",
     description:
@@ -101,6 +106,7 @@ export const CIPHER_DATA: CipherInfo[] = [
   },
   {
     name: "Beaufort",
+    slug: "beaufort",
     family: "Polyalphabetic Substitution",
     familySlug: "polyalphabetic",
     description:
@@ -120,6 +126,7 @@ export const CIPHER_DATA: CipherInfo[] = [
   },
   {
     name: "Porta",
+    slug: "porta",
     family: "Polyalphabetic Substitution",
     familySlug: "polyalphabetic",
     description:
@@ -141,6 +148,7 @@ export const CIPHER_DATA: CipherInfo[] = [
   // ── Transposition ────────────────────────────────────────────────────
   {
     name: "Columnar Transposition",
+    slug: "columnar",
     family: "Transposition",
     familySlug: "transposition",
     description:
@@ -162,6 +170,7 @@ export const CIPHER_DATA: CipherInfo[] = [
   // ── Polygraphic Substitution ─────────────────────────────────────────
   {
     name: "Playfair",
+    slug: "playfair",
     family: "Polygraphic Substitution",
     familySlug: "polygraphic",
     description:
@@ -181,6 +190,7 @@ export const CIPHER_DATA: CipherInfo[] = [
   },
   {
     name: "Hill",
+    slug: "hill",
     family: "Polygraphic Substitution",
     familySlug: "polygraphic",
     description:
@@ -200,6 +210,7 @@ export const CIPHER_DATA: CipherInfo[] = [
   },
   {
     name: "Four-Square",
+    slug: "foursquare",
     family: "Polygraphic Substitution",
     familySlug: "polygraphic",
     description:
@@ -221,6 +232,7 @@ export const CIPHER_DATA: CipherInfo[] = [
   // ── Fractionating Ciphers ────────────────────────────────────────────
   {
     name: "Bifid",
+    slug: "bifid",
     family: "Fractionating",
     familySlug: "fractionating",
     description:
@@ -240,6 +252,7 @@ export const CIPHER_DATA: CipherInfo[] = [
   },
   {
     name: "Trifid",
+    slug: "trifid",
     family: "Fractionating",
     familySlug: "fractionating",
     description:
@@ -259,6 +272,7 @@ export const CIPHER_DATA: CipherInfo[] = [
   },
   {
     name: "ADFGX",
+    slug: "adfgx",
     family: "Fractionating",
     familySlug: "fractionating",
     description:
@@ -278,6 +292,7 @@ export const CIPHER_DATA: CipherInfo[] = [
   },
   {
     name: "ADFGVX",
+    slug: "adfgvx",
     family: "Fractionating",
     familySlug: "fractionating",
     description:
@@ -297,6 +312,7 @@ export const CIPHER_DATA: CipherInfo[] = [
   },
   {
     name: "Nihilist",
+    slug: "nihilist",
     family: "Fractionating",
     familySlug: "fractionating",
     description:
@@ -318,6 +334,7 @@ export const CIPHER_DATA: CipherInfo[] = [
   // ── Modern Block Ciphers ─────────────────────────────────────────────
   {
     name: "TEA",
+    slug: "tea",
     family: "Modern Block",
     familySlug: "modern-block",
     description:
@@ -337,6 +354,7 @@ export const CIPHER_DATA: CipherInfo[] = [
   },
   {
     name: "XTEA",
+    slug: "xtea",
     family: "Modern Block",
     familySlug: "modern-block",
     description:
@@ -356,6 +374,7 @@ export const CIPHER_DATA: CipherInfo[] = [
   },
   {
     name: "Lucifer",
+    slug: "lucifer",
     family: "Modern Block",
     familySlug: "modern-block",
     description:
@@ -375,6 +394,7 @@ export const CIPHER_DATA: CipherInfo[] = [
   },
   {
     name: "LOKI",
+    slug: "loki",
     family: "Modern Block",
     familySlug: "modern-block",
     description:
@@ -394,6 +414,7 @@ export const CIPHER_DATA: CipherInfo[] = [
   },
   {
     name: "MISTY1",
+    slug: "misty1",
     family: "Modern Block",
     familySlug: "modern-block",
     description:
@@ -415,6 +436,7 @@ export const CIPHER_DATA: CipherInfo[] = [
   // ── Numeric Ciphers ──────────────────────────────────────────────────
   {
     name: "Polybius Square",
+    slug: "polybius",
     family: "Numeric",
     familySlug: "numeric",
     description:
@@ -445,14 +467,39 @@ export const CIPHER_FAMILIES = [
   { name: "Numeric", slug: "numeric", count: 1 },
 ] as const;
 
-// Example ciphertexts for "Try an Example" feature
+// Example ciphertexts for "Try an Example" feature — covers all 22 ciphers
 export const EXAMPLE_CIPHERTEXTS = [
-  { label: "Caesar (shift 3)", ciphertext: "WKHUHIRUHWKHUHIRUHWKHUHIRUH", expectedCipher: "Caesar" },
-  { label: "Vigenere (key: LEMON)", ciphertext: "LXFOPVEFRNHR", expectedCipher: "Vigenere" },
-  { label: "Playfair (key: MONARCHY)", ciphertext: "BMODZBXDNABEKUDMUIXMMOUVIF", expectedCipher: "Playfair" },
-  { label: "ADFGX", ciphertext: "FAXDFADDDGDGFFFAFAXAFAFX", expectedCipher: "ADFGX" },
-  { label: "Columnar Transposition", ciphertext: "EVLNEACDTKESEAQROFOJ", expectedCipher: "Columnar Transposition" },
-  { label: "Polybius Square", ciphertext: "2315313134", expectedCipher: "Polybius Square" },
-  { label: "Nihilist", ciphertext: "36 55 53 44 64 36 65 44", expectedCipher: "Nihilist" },
-  { label: "TEA (hex output)", ciphertext: "A1B2C3D4E5F60718293A4B5C6D7E8F90", expectedCipher: "TEA" },
+  // ── Monoalphabetic Substitution ──
+  { label: "Caesar (shift 3)", ciphertext: "WKHUHIRUHWKHUHIRUHWKHUHIRUHWKHUHIRUH", expectedCipher: "caesar" },
+  { label: "Affine (a=5, b=8)", ciphertext: "IHHWVCGWJJGHRMFRCHXLBQKCHYYRGHXQCCHRMGH", expectedCipher: "affine" },
+  { label: "Atbash (reversed alphabet)", ciphertext: "SVOOLDZLIOWSVOOLDZLIOWSVOOLDZLIOW", expectedCipher: "atbash" },
+
+  // ── Polyalphabetic Substitution ──
+  { label: "Vigenère (key: LEMON)", ciphertext: "LXFOPVEFRNHRLXFOPVEFRNHRLXFOPVEFRNHR", expectedCipher: "vigenere" },
+  { label: "Autokey (key: QUEENLY)", ciphertext: "QNXEPVYTWTWPQNXEPVYTWTWPQNXEPVYTWTWP", expectedCipher: "autokey" },
+  { label: "Beaufort (key: KEY)", ciphertext: "DANZQDANZQDANZQDANZQDANZQDANZQDANZQ", expectedCipher: "beaufort" },
+  { label: "Porta (key: FORTIFY)", ciphertext: "SYSJHQZWRSYSJHQZWRSYSJHQZWRSYSJHQZWR", expectedCipher: "porta" },
+
+  // ── Transposition ──
+  { label: "Columnar Transposition (key: ZEBRAS)", ciphertext: "EVLNEACDTKESEAQROFOJDEIEAAEVLNEACDTKESEAQROFOJ", expectedCipher: "columnar" },
+
+  // ── Polygraphic Substitution ──
+  { label: "Playfair (key: MONARCHY)", ciphertext: "BMODZBXDNABEKUDMUIXMMOUVIFBMODZBXDNABEKUDMUIXMMOUVIF", expectedCipher: "playfair" },
+  { label: "Hill (matrix key)", ciphertext: "POHPOHPOHPOHPOHPOHPOHPOHPOHPOHPOHPOH", expectedCipher: "hill" },
+  { label: "Four-Square (keys: EXAMPLE, KEYWORD)", ciphertext: "FYGMKDFYGMKDFYGMKDFYGMKDFYGMKDFYGMKD", expectedCipher: "foursquare" },
+
+  // ── Fractionating ──
+  { label: "Bifid (Polybius-based)", ciphertext: "UAEOLWRINSUAEOLWRINSUAEOLWRINSUAEOLWRINS", expectedCipher: "bifid" },
+  { label: "Trifid (3D cube)", ciphertext: "ZLSJGNAETHRIHZLSJGNAETHRIHZLSJGNAETHRIH", expectedCipher: "trifid" },
+  { label: "ADFGX (WWI German cipher)", ciphertext: "FAXDFADDDGDGFFFAFAXAFAXFAXDFADDDGDGFFFAFAXAFAX", expectedCipher: "adfgx" },
+  { label: "ADFGVX (extended with digits)", ciphertext: "DGDDDAGDDGAFADDFDADVDVFAADVXDGDDDAGDDGAFADDFDADVDVFAADVX", expectedCipher: "adfgvx" },
+  { label: "Nihilist (numeric pairs)", ciphertext: "365553446436654436555344643665443655534464366544", expectedCipher: "nihilist" },
+  { label: "Polybius Square (digit output)", ciphertext: "23153131342315313134231531313423153131342315313134", expectedCipher: "polybius" },
+
+  // ── Modern Block Ciphers (hex output) ──
+  { label: "TEA (Tiny Encryption Algorithm)", ciphertext: "A1B2C3D4E5F60718293A4B5C6D7E8F90A1B2C3D4E5F60718", expectedCipher: "tea" },
+  { label: "XTEA (Extended TEA)", ciphertext: "B2C3D4E5F6071829F0E1D2C3B4A59687B2C3D4E5F6071829", expectedCipher: "xtea" },
+  { label: "Lucifer (IBM precursor to DES)", ciphertext: "A1B2C3D4E5F60718FEDCBA9876543210A1B2C3D4E5F60718", expectedCipher: "lucifer" },
+  { label: "LOKI (Australian DES alternative)", ciphertext: "C3D4E5F6071829305B5A57676A56676EC3D4E5F607182930", expectedCipher: "loki" },
+  { label: "MISTY1 (Mitsubishi cipher)", ciphertext: "D4E5F60718293A4B00112233445566778899AABBCCDDEEFF", expectedCipher: "misty1" },
 ];

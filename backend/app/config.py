@@ -9,8 +9,8 @@ class Settings(BaseSettings):
         "http://localhost:3000",
         "https://cipherlens.vercel.app",
     ]
-    MODEL_DIR: str = "models/"
-    USE_MOCK_MODEL: bool = True
+    MODEL_DIR: str = "app/models"
+    USE_MOCK_MODEL: bool = False
 
     class Config:
         env_file = ".env"

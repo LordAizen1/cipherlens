@@ -13,13 +13,15 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useCipherStore } from "@/hooks/use-cipher-store";
 import { predictCipher } from "@/lib/api";
 import { EXAMPLE_CIPHERTEXTS } from "@/lib/constants";
-import { Eraser, FlaskConical, Loader2, Sparkles } from "lucide-react";
+import { Eraser, FlaskConical, Loader2, Sparkles, Brain, Cpu } from "lucide-react";
 import { toast } from "sonner";
 
 export function CipherInput() {
   const {
     ciphertext,
     setCiphertext,
+    modelType,
+    setModelType,
     isAnalyzing,
     setIsAnalyzing,
     setResult,
@@ -39,13 +41,16 @@ export function CipherInput() {
     try {
       const result = await predictCipher({
         ciphertext,
-        model_type: "hierarchical",
-        confidence_threshold: 0.1,
+        model_type: modelType,
+        confidence_threshold: 0.05,
         include_features: true,
       });
       setResult(result);
-    } catch {
-      toast.error("Failed to analyze ciphertext. Please try again.");
+      const modelLabel = modelType === "hybrid" ? "Hybrid CNN" : modelType === "deep_learning" ? "CNN Deep Learning" : "XGBoost";
+      toast.success(`Analysis complete using ${modelLabel} model`);
+    } catch (err) {
+      const message = err instanceof Error ? err.message : "Failed to analyze ciphertext.";
+      toast.error(message);
     } finally {
       setIsAnalyzing(false);
     }
@@ -58,6 +63,8 @@ export function CipherInput() {
       setResult(null);
     }
   }
+
+  const modelIcon = modelType === "hybrid" ? <Sparkles className="h-3.5 w-3.5" /> : modelType === "deep_learning" ? <Brain className="h-3.5 w-3.5" /> : <Cpu className="h-3.5 w-3.5" />;
 
   return (
     <Card>
@@ -81,6 +88,39 @@ export function CipherInput() {
               <span className="text-destructive">Minimum 5 characters</span>
             )}
           </div>
+        </div>
+
+        {/* Model type selector */}
+        <div className="space-y-1.5">
+          <label className="text-xs font-medium text-muted-foreground">Model Engine</label>
+          <Select value={modelType} onValueChange={(v) => setModelType(v as "hierarchical" | "deep_learning" | "hybrid")}>
+            <SelectTrigger className="w-full">
+              <div className="flex items-center gap-2">
+                {modelIcon}
+                <SelectValue />
+              </div>
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="hybrid">
+                <div className="flex items-center gap-2">
+                  <Sparkles className="h-3.5 w-3.5" />
+                  Hybrid CNN — Char + Features (87% acc) ✨
+                </div>
+              </SelectItem>
+              <SelectItem value="deep_learning">
+                <div className="flex items-center gap-2">
+                  <Brain className="h-3.5 w-3.5" />
+                  CNN Deep Learning (63% acc)
+                </div>
+              </SelectItem>
+              <SelectItem value="hierarchical">
+                <div className="flex items-center gap-2">
+                  <Cpu className="h-3.5 w-3.5" />
+                  XGBoost + Soft-Routing (76% acc)
+                </div>
+              </SelectItem>
+            </SelectContent>
+          </Select>
         </div>
 
         {/* Example selector */}
@@ -132,3 +172,4 @@ export function CipherInput() {
     </Card>
   );
 }
+

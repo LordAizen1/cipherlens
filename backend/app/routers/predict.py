@@ -7,6 +7,8 @@ from app.config import Settings
 from app.schemas import PredictionRequest, PredictionResponse
 from app.services.feature_extraction import extract_features
 from app.services.model_inference import get_model
+from app.services.dl_inference import get_dl_model
+from app.services.hybrid_inference import get_hybrid_model
 
 router = APIRouter()
 
@@ -17,17 +19,32 @@ async def predict(request: PredictionRequest):
         raise HTTPException(status_code=400, detail="Ciphertext too short (min 2 characters).")
 
     settings = Settings()
-    model = get_model(
-        use_mock=settings.USE_MOCK_MODEL,
-        model_dir=settings.MODEL_DIR,
-    )
-
     features = extract_features(request.ciphertext)
-    predictions, importances, inference_ms = model.predict(
-        ciphertext=request.ciphertext,
-        features=features,
-        model_type=request.model_type,
-    )
+
+    if request.model_type == "deep_learning":
+        dl_model = get_dl_model(model_dir=settings.MODEL_DIR)
+        predictions, importances, inference_ms = dl_model.predict(
+            ciphertext=request.ciphertext,
+            features=features,
+            model_type=request.model_type,
+        )
+    elif request.model_type == "hybrid":
+        hybrid_model = get_hybrid_model(model_dir=settings.MODEL_DIR)
+        predictions, importances, inference_ms = hybrid_model.predict(
+            ciphertext=request.ciphertext,
+            features=features,
+            model_type=request.model_type,
+        )
+    else:
+        model = get_model(
+            use_mock=settings.USE_MOCK_MODEL,
+            model_dir=settings.MODEL_DIR,
+        )
+        predictions, importances, inference_ms = model.predict(
+            ciphertext=request.ciphertext,
+            features=features,
+            model_type=request.model_type,
+        )
 
     # Apply confidence threshold
     filtered = [p for p in predictions if p.confidence >= request.confidence_threshold]

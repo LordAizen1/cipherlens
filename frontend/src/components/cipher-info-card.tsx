@@ -14,7 +14,7 @@ export function CipherInfoCard() {
   if (!result) return null;
 
   const cipher = CIPHER_DATA.find(
-    (c) => c.name === result.top_prediction.cipher_name
+    (c) => c.slug === result.top_prediction.cipher_name
   );
 
   if (!cipher) return null;

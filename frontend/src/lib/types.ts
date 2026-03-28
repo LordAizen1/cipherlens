@@ -2,7 +2,7 @@
 
 export interface PredictionRequest {
   ciphertext: string;
-  model_type: "hierarchical" | "unified";
+  model_type: "hierarchical" | "unified" | "deep_learning" | "hybrid";
   confidence_threshold: number;
   include_features: boolean;
 }
@@ -38,13 +38,14 @@ export interface PredictionResponse {
   all_predictions: CipherPrediction[];
   features: FeatureSet;
   feature_importance: FeatureImportance[];
-  model_used: "hierarchical" | "unified";
+  model_used: "hierarchical" | "unified" | "deep_learning" | "hybrid";
   inference_time_ms: number;
 }
 
 // Static cipher info for the encyclopedia
 export interface CipherInfo {
   name: string;
+  slug: string;
   family: string;
   familySlug: string;
   description: string;

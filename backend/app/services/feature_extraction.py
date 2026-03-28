@@ -1,73 +1,121 @@
 import math
-import re
-from collections import Counter
-
+import zlib
 import numpy as np
-
+from collections import Counter
 from app.schemas import FeatureSet
 
+def extract_features(cipher: str) -> FeatureSet:
+    """
+    Extracts 12 statistical features from a ciphertext string and returns a FeatureSet.
+    Matches the exact logic from the jupyter notebook.
+    """
+    if isinstance(cipher, bytes):
+        data = cipher
+        text = None
+    else:
+        # Avoid encode errors
+        data = cipher.encode('utf-8', errors='ignore')
+        text = cipher
 
-def _shannon_entropy(text: str) -> float:
-    """Shannon entropy in bits per character."""
-    if not text:
-        return 0.0
-    counts = Counter(text)
-    length = len(text)
-    return -sum(
-        (c / length) * math.log2(c / length) for c in counts.values()
-    )
+    total = len(data)
+    if total == 0:
+        return FeatureSet(
+            length=0.0, entropy=0.0, compression=0.0, bigram_entropy=0.0,
+            trigram_entropy=0.0, uniformity=0.0, unique_ratio=0.0, transition_var=0.0,
+            run_length_mean=0.0, run_length_var=0.0, ioc=0.0, ioc_variance=0.0
+        )
 
+    freqs = Counter(data)
+    entropy = -sum((f/total)*math.log2(f/total) for f in freqs.values())
+    compression = len(zlib.compress(data)) / total
 
-def _index_of_coincidence(text: str) -> float:
-    """Index of Coincidence: sum(f*(f-1)) / (N*(N-1))."""
-    n = len(text)
-    if n <= 1:
-        return 0.0
-    counts = Counter(text)
-    numerator = sum(f * (f - 1) for f in counts.values())
-    return numerator / (n * (n - 1))
+    if total > 1:
+        bigrams = [data[i:i+2] for i in range(total-1)]
+        freqs2 = Counter(bigrams)
+        total2 = len(bigrams)
+        bigram_entropy = -sum((f/total2)*math.log2(f/total2) for f in freqs2.values())
+    else:
+        bigram_entropy = 0.0
 
+    if total > 2:
+        trigrams = [data[i:i+3] for i in range(total-2)]
+        freqs3 = Counter(trigrams)
+        total3 = len(trigrams)
+        trigram_entropy = -sum((f/total3)*math.log2(f/total3) for f in freqs3.values())
+    else:
+        trigram_entropy = 0.0
 
-def _chi_square(text: str) -> float:
-    """Chi-square statistic against uniform letter distribution (26 letters)."""
-    alpha_only = re.sub(r"[^A-Z]", "", text.upper())
-    n = len(alpha_only)
-    if n == 0:
-        return 0.0
-    expected = n / 26.0
-    counts = Counter(alpha_only)
-    observed = np.array([counts.get(chr(i), 0) for i in range(65, 91)], dtype=float)
-    return float(np.sum((observed - expected) ** 2 / expected))
+    vals = list(freqs.values())
+    uniformity = float(np.std(vals)) if len(vals) > 0 else 0.0
+    unique_ratio = len(freqs) / total
 
+    transitions = Counter(zip(data, data[1:]))
+    transition_var = float(np.var(list(transitions.values()))) if transitions else 0.0
 
-def _ngram_entropy(text: str, n: int) -> float:
-    """Shannon entropy over overlapping n-grams."""
-    if len(text) < n:
-        return 0.0
-    ngrams = [text[i : i + n] for i in range(len(text) - n + 1)]
-    counts = Counter(ngrams)
-    total = len(ngrams)
-    return -sum(
-        (c / total) * math.log2(c / total) for c in counts.values()
-    )
+    runs = []
+    current = 1
+    for i in range(1, total):
+        if data[i] == data[i-1]:
+            current += 1
+        else:
+            runs.append(current)
+            current = 1
+    runs.append(current)
 
+    run_length_mean = float(np.mean(runs)) if runs else 0.0
+    run_length_var = float(np.var(runs)) if runs else 0.0
 
-def extract_features(ciphertext: str) -> FeatureSet:
-    """Extract cryptanalytic features from raw ciphertext."""
-    cleaned = ciphertext.upper().replace(" ", "")
-    length = len(cleaned) or 1  # avoid division by zero
+    # IoC — works on alpha chars, falls back to digits for numeric ciphers
+    alpha_chars = [c for c in (text or '') if c.isalpha()]
+    if len(alpha_chars) > 1:
+        f = Counter(alpha_chars)
+        N = len(alpha_chars)
+        ioc = sum(v*(v-1) for v in f.values()) / (N*(N-1))
+    else:
+        digit_chars = [c for c in (text or '') if c.isdigit()]
+        if len(digit_chars) > 1:
+            f = Counter(digit_chars)
+            N = len(digit_chars)
+            ioc = sum(v*(v-1) for v in f.values()) / (N*(N-1))
+        else:
+            ioc = 0.0
 
-    digit_count = sum(1 for c in cleaned if c.isdigit())
-    alpha_count = sum(1 for c in cleaned if c.isalpha())
+    work_chars = alpha_chars if len(alpha_chars) > 1 else [c for c in (text or '') if c.isdigit()]
+    work_text = ''.join(work_chars)
+    if len(work_text) > 2:
+        iocs = []
+        for period in range(2, 10):
+            slices = [''.join(work_text[i::period]) for i in range(period)]
+            p_vals = []
+            for s in slices:
+                if len(s) > 1:
+                    fc = Counter(s)
+                    N2 = len(s)
+                    p_vals.append(sum(v*(v-1) for v in fc.values())/(N2*(N2-1)))
+            if p_vals:
+                iocs.append(np.var(p_vals))
+        ioc_variance = float(np.mean(iocs)) if iocs else 0.0
+    else:
+        ioc_variance = 0.0
+
+    # New features
+    txt_len = max(len(text or ''), 1)
+    digit_ratio = sum(1 for c in (text or '') if c.isdigit()) / txt_len
+    alpha_ratio = sum(1 for c in (text or '') if c.isalpha()) / txt_len
 
     return FeatureSet(
-        entropy=round(_shannon_entropy(cleaned), 4),
-        ioc=round(_index_of_coincidence(cleaned), 6),
-        chi_square=round(_chi_square(cleaned), 2),
-        alphabet_size=len(set(cleaned)),
-        has_spaces=" " in ciphertext,
-        digit_ratio=round(digit_count / length, 4),
-        alpha_ratio=round(alpha_count / length, 4),
-        bigram_entropy=round(_ngram_entropy(cleaned, 2), 4),
-        trigram_entropy=round(_ngram_entropy(cleaned, 3), 4),
+        length=float(total),
+        entropy=float(entropy),
+        compression=float(compression),
+        bigram_entropy=float(bigram_entropy),
+        trigram_entropy=float(trigram_entropy),
+        uniformity=float(uniformity),
+        unique_ratio=float(unique_ratio),
+        transition_var=float(transition_var),
+        run_length_mean=float(run_length_mean),
+        run_length_var=float(run_length_var),
+        ioc=float(ioc),
+        ioc_variance=float(ioc_variance),
+        digit_ratio=float(digit_ratio),
+        alpha_ratio=float(alpha_ratio),
     )
