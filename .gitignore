@@ -3,7 +3,8 @@ node_modules/
 __pycache__/
 *.pyc
 .venv/
-backend/cipherlens/        # python venv (created with: python -m venv cipherlens)
+# python venv (created with: python -m venv cipherlens inside backend/)
+backend/cipherlens/
 
 # Build outputs
 .next/
