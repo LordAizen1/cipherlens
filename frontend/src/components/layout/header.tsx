@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { motion } from "framer-motion";
 import { ScanEye, Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { AnimatedThemeToggler } from "@/components/ui/animated-theme-toggler";
@@ -33,13 +34,20 @@ export function Header() {
               key={item.href}
               href={item.href}
               className={cn(
-                "rounded-md px-3 py-1.5 text-sm font-medium transition-colors hover:bg-accent",
+                "relative rounded-md px-3 py-1.5 text-sm font-medium transition-colors hover:text-accent-foreground",
                 pathname === item.href
-                  ? "bg-accent text-accent-foreground"
+                  ? "text-accent-foreground"
                   : "text-muted-foreground"
               )}
             >
-              {item.label}
+              {pathname === item.href && (
+                <motion.span
+                  layoutId="nav-indicator"
+                  className="absolute inset-0 rounded-md bg-accent"
+                  transition={{ type: "spring", bounce: 0.2, duration: 0.4 }}
+                />
+              )}
+              <span className="relative z-10">{item.label}</span>
             </Link>
           ))}
         </nav>

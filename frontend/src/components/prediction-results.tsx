@@ -53,9 +53,11 @@ export function PredictionResults() {
     );
   }
 
-  const { family_prediction, top_prediction, all_predictions, model_used, inference_time_ms, low_confidence } = result;
+  const { family_prediction, top_prediction, all_predictions, model_used, inference_time_ms } = result;
   const fullFamilyName = FAMILY_NAME_MAP[top_prediction.cipher_family] ?? top_prediction.cipher_family;
   const familyColor = FAMILY_COLORS[fullFamilyName as CipherFamily] || "";
+  const lowConfidence = top_prediction.confidence < 0.6;
+  const top3 = all_predictions.slice(0, 3);
 
   return (
     <AnimatePresence mode="wait">
@@ -86,10 +88,10 @@ export function PredictionResults() {
           </CardHeader>
           <CardContent className="space-y-4">
             {/* Low confidence warning */}
-            {low_confidence && (
+            {lowConfidence && (
               <div className="flex items-center gap-2 rounded-lg border border-yellow-500/30 bg-yellow-500/10 p-3 text-sm text-yellow-700 dark:text-yellow-400">
                 <AlertTriangle className="h-4 w-4 shrink-0" />
-                Low confidence — prediction may be unreliable. The input might not be a recognized cipher or may be too short for statistical significance.
+                Low confidence — the model is unsure. Consider the top 3 predictions below, or try a longer input (100+ characters).
               </div>
             )}
 
@@ -139,36 +141,69 @@ export function PredictionResults() {
 
             <Separator />
 
-            {/* All predictions */}
+            {/* Top 3 predictions */}
             <div>
               <h4 className="mb-3 flex items-center gap-2 text-sm font-medium">
                 <ListOrdered className="h-4 w-4" />
-                All Predictions
+                Top Predictions
               </h4>
               <div className="space-y-2">
-                {all_predictions.map((pred, i) => (
-                  <motion.div
-                    key={pred.cipher_name}
-                    initial={{ opacity: 0, x: -10 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: i * 0.05 }}
-                    className="flex items-center gap-3"
-                  >
-                    <span className="w-5 text-xs font-medium text-muted-foreground">
-                      {i + 1}.
-                    </span>
-                    <span className="w-36 truncate text-sm font-medium">
-                      {pred.cipher_name}
-                    </span>
-                    <ConfidenceBar
-                      confidence={pred.confidence}
-                      className="flex-1"
-                      size="sm"
-                    />
-                  </motion.div>
-                ))}
+                {top3.map((pred, i) => {
+                  const predFamily = FAMILY_NAME_MAP[pred.cipher_family] ?? pred.cipher_family;
+                  const predColor = FAMILY_COLORS[predFamily as CipherFamily] || "";
+                  return (
+                    <motion.div
+                      key={pred.cipher_name}
+                      initial={{ opacity: 0, x: -10 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: i * 0.05 }}
+                      className="flex items-center gap-3"
+                    >
+                      <span className="w-5 text-xs font-medium text-muted-foreground">
+                        {i + 1}.
+                      </span>
+                      <span className="w-24 truncate text-sm font-medium">
+                        {pred.cipher_name}
+                      </span>
+                      <Badge className={`${predColor} text-[10px] px-1.5 py-0`} variant="secondary">
+                        {predFamily}
+                      </Badge>
+                      <ConfidenceBar
+                        confidence={pred.confidence}
+                        className="flex-1"
+                        size="sm"
+                      />
+                    </motion.div>
+                  );
+                })}
               </div>
             </div>
+
+            {/* Remaining predictions (collapsed) */}
+            {all_predictions.length > 3 && (
+              <details className="group">
+                <summary className="cursor-pointer text-xs text-muted-foreground hover:text-foreground transition-colors">
+                  Show all {all_predictions.length} predictions
+                </summary>
+                <div className="mt-2 space-y-1.5">
+                  {all_predictions.slice(3).map((pred, i) => (
+                    <div key={pred.cipher_name} className="flex items-center gap-3">
+                      <span className="w-5 text-xs font-medium text-muted-foreground">
+                        {i + 4}.
+                      </span>
+                      <span className="w-24 truncate text-xs text-muted-foreground">
+                        {pred.cipher_name}
+                      </span>
+                      <ConfidenceBar
+                        confidence={pred.confidence}
+                        className="flex-1"
+                        size="sm"
+                      />
+                    </div>
+                  ))}
+                </div>
+              </details>
+            )}
           </CardContent>
         </Card>
       </motion.div>

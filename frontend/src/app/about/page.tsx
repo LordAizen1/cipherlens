@@ -1,6 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
+import { BlurFade } from "@/components/ui/blur-fade";
 import {
   Brain,
   GitBranch,
@@ -11,20 +12,21 @@ import {
   BarChart3,
   Cpu,
   Github,
+  Linkedin,
 } from "lucide-react";
 
 const PIPELINE_STEPS = [
   { icon: <Database className="h-4 w-4" />, label: "Ciphertext Input", desc: "User pastes encrypted text" },
-  { icon: <BarChart3 className="h-4 w-4" />, label: "Feature Extraction", desc: "31 statistical & structural features" },
-  { icon: <GitBranch className="h-4 w-4" />, label: "Classification", desc: "Hierarchical or unified model" },
-  { icon: <Target className="h-4 w-4" />, label: "Prediction", desc: "Ranked ciphers with confidence" },
+  { icon: <BarChart3 className="h-4 w-4" />, label: "Feature Extraction", desc: "14 statistical features computed" },
+  { icon: <GitBranch className="h-4 w-4" />, label: "Classification", desc: "Hybrid CNN, DL, or XGBoost" },
+  { icon: <Target className="h-4 w-4" />, label: "Prediction", desc: "Top 3 ciphers with confidence" },
 ];
 
 const TEAM = [
-  { name: "Dhruv Verma", roll: "2022172", github: "https://github.com/" },
-  { name: "Maulik Mahey", roll: "2022282", github: "https://github.com/maulik-dot" },
-  { name: "Md Kaif", roll: "2022289", github: "https://github.com/LordAizen1" },
-  { name: "Sweta Snigdha", roll: "2022527", github: "https://github.com/cypherei00" },
+  { name: "Dhruv Verma", roll: "2022172", github: "https://github.com/dhruv22172", linkedin: "https://www.linkedin.com/in/dhruvverma2022172/" },
+  { name: "Maulik Mahey", roll: "2022282", github: "https://github.com/maulik-dot", linkedin: "https://www.linkedin.com/in/maulik-mahey-952a92260/" },
+  { name: "Md Kaif", roll: "2022289", github: "https://github.com/LordAizen1", linkedin: "https://www.linkedin.com/in/mohammadkaif007/" },
+  { name: "Sweta Snigdha", roll: "2022527", github: "https://github.com/cypherei00", linkedin: "https://www.linkedin.com/in/sweta-snigdha-8549a4255/" },
 ];
 
 const CIPHER_TABLE = [
@@ -32,26 +34,28 @@ const CIPHER_TABLE = [
   { family: "Polyalphabetic Substitution", ciphers: "Vigenere, Autokey, Beaufort, Porta", count: 4 },
   { family: "Transposition", ciphers: "Columnar Transposition", count: 1 },
   { family: "Polygraphic Substitution", ciphers: "Playfair, Hill, Four-Square", count: 3 },
-  { family: "Fractionating", ciphers: "Bifid, Trifid, ADFGX, ADFGVX, Nihilist", count: 5 },
+  { family: "Fractionating", ciphers: "Bifid, Trifid, ADFGX, ADFGVX, Nihilist, Polybius", count: 6 },
   { family: "Modern Block", ciphers: "Lucifer, MISTY1, LOKI, TEA, XTEA", count: 5 },
-  { family: "Numeric", ciphers: "Polybius Square", count: 1 },
 ];
 
 export default function AboutPage() {
   return (
     <div className="mx-auto max-w-4xl px-4 py-6">
-      <div className="mb-6">
-        <h1 className="text-3xl font-bold tracking-tight">
-          About CipherLens
-        </h1>
-        <p className="mt-1 text-muted-foreground">
-          A machine learning system for automated classical cipher
-          identification.
-        </p>
-      </div>
+      <BlurFade delay={0.1}>
+        <div className="mb-6">
+          <h1 className="text-3xl font-bold tracking-tight">
+            About CipherLens
+          </h1>
+          <p className="mt-1 text-muted-foreground">
+            A machine learning system for automated classical cipher
+            identification.
+          </p>
+        </div>
+      </BlurFade>
 
       <div className="space-y-6">
         {/* Overview */}
+        <BlurFade delay={0.2}>
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
@@ -67,21 +71,24 @@ export default function AboutPage() {
             </p>
             <p>
               CipherLens automates this process using machine learning. Given
-              only ciphertext (no plaintext or keys), our models extract 30+
+              only ciphertext (no plaintext or keys), our models extract 14
               statistical features and classify the text into one of 22 cipher
-              types across 7 cryptographic families — achieving up to 96%
-              accuracy on distinct cipher families.
+              types across 7 cryptographic families.
             </p>
             <p>
-              The system uses a dual approach: a <strong>hierarchical
-              classifier</strong> (family → specific cipher) and a{" "}
-              <strong>unified classifier</strong> (single-stage multi-class),
-              allowing performance comparison.
+              The system offers three model engines: a{" "}
+              <strong>Hybrid CNN</strong> (82% acc) combining character-level
+              patterns with statistical features, a <strong>CNN Deep
+                Learning</strong> model (71% acc) reading raw character sequences,
+              and an <strong>XGBoost hierarchical classifier</strong> (76% acc)
+              using a two-stage family → cipher pipeline with soft-routing.
             </p>
           </CardContent>
         </Card>
+        </BlurFade>
 
         {/* Pipeline */}
+        <BlurFade delay={0.3}>
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
@@ -110,8 +117,10 @@ export default function AboutPage() {
             </div>
           </CardContent>
         </Card>
+        </BlurFade>
 
         {/* Cipher Taxonomy */}
+        <BlurFade delay={0.4}>
         <Card>
           <CardHeader>
             <CardTitle>Supported Ciphers (22)</CardTitle>
@@ -150,10 +159,12 @@ export default function AboutPage() {
             </div>
           </CardContent>
         </Card>
+        </BlurFade>
 
         <Separator />
 
         {/* Team */}
+        <BlurFade delay={0.5}>
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
@@ -174,6 +185,14 @@ export default function AboutPage() {
                     >
                       <Github className="h-4 w-4" />
                     </a>
+                    <a
+                      href={member.linkedin}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-muted-foreground transition-colors hover:text-[#0A66C2]"
+                    >
+                      <Linkedin className="h-4 w-4" />
+                    </a>
                     {member.name}
                   </div>
                   <div className="text-xs text-muted-foreground">
@@ -186,10 +205,11 @@ export default function AboutPage() {
               Supervised by <strong>Dr. Ravi Anand</strong> — IIIT Delhi
             </div>
             <div className="mt-1 text-center text-xs text-muted-foreground">
-              BTP Spring 2026
+              BTP 2025-2026
             </div>
           </CardContent>
         </Card>
+        </BlurFade>
       </div>
     </div>
   );

@@ -467,39 +467,39 @@ export const CIPHER_FAMILIES = [
   { name: "Numeric", slug: "numeric", count: 1 },
 ] as const;
 
-// Example ciphertexts for "Try an Example" feature — covers all 22 ciphers
+// Example ciphertexts for "Try an Example" feature — real samples from training dataset
 export const EXAMPLE_CIPHERTEXTS = [
   // ── Monoalphabetic Substitution ──
-  { label: "Caesar (shift 3)", ciphertext: "WKHUHIRUHWKHUHIRUHWKHUHIRUHWKHUHIRUH", expectedCipher: "caesar" },
-  { label: "Affine (a=5, b=8)", ciphertext: "IHHWVCGWJJGHRMFRCHXLBQKCHYYRGHXQCCHRMGH", expectedCipher: "affine" },
-  { label: "Atbash (reversed alphabet)", ciphertext: "SVOOLDZLIOWSVOOLDZLIOWSVOOLDZLIOW", expectedCipher: "atbash" },
+  { label: "Caesar", ciphertext: "VJGCKTGXQNWVKQPKVKUGCUAVQHQTIGVVJCVVJGACTGPQVAGVUQNXGFKCYKNNCNUQTGOCKPSWKVGGUUGPVKCNDGECWUGHQTVJGHQTGUGGCDNGHWVWTGEQORWV", expectedCipher: "caesar" },
+  { label: "Affine", ciphertext: "HVAMKTITJVIXKIEIVCTAJIBJDIPAFFAEKTWAQVHKUYDGBGEIKWDJIBGXIVGWIVGJKTWAPAQJAPCJGVCAXIVVIXKIECFIJCFAAYGJJDIAJDIVGF", expectedCipher: "affine" },
+  { label: "Atbash", ciphertext: "HVNKLDVIVWDLIPVIHDSLGIFHGDSRHGOVYOLDVIKILGVXGRLMHXIVWRYOVTILXVIBHGLIVHBLFIOLXZOMLMKILURGUZINVIH", expectedCipher: "atbash" },
 
   // ── Polyalphabetic Substitution ──
-  { label: "Vigenère (key: LEMON)", ciphertext: "LXFOPVEFRNHRLXFOPVEFRNHRLXFOPVEFRNHR", expectedCipher: "vigenere" },
-  { label: "Autokey (key: QUEENLY)", ciphertext: "QNXEPVYTWTWPQNXEPVYTWTWPQNXEPVYTWTWP", expectedCipher: "autokey" },
-  { label: "Beaufort (key: KEY)", ciphertext: "DANZQDANZQDANZQDANZQDANZQDANZQDANZQ", expectedCipher: "beaufort" },
-  { label: "Porta (key: FORTIFY)", ciphertext: "SYSJHQZWRSYSJHQZWRSYSJHQZWRSYSJHQZWR", expectedCipher: "porta" },
+  { label: "Vigenere", ciphertext: "LHQFKXBZGSDPNPXLGVZNKIIWSLQIUBMONXWAZZIYLFKSHXUZJPWYUUEEAIMDKAMYJJMYHXJDKHWYSPYZGOAAXUJFLITZOBEZ", expectedCipher: "vigenere" },
+  { label: "Autokey", ciphertext: "SOVQJKUANKKCQGLDIIALEBKHELAIICFVRMPMBQZMTRVPBMMDSBNZPYZCQITSISWTJTNSLNRNHPAMBUXXBAGXIQGYVEOMNEKZLBEAGGHILWZICRXOIY", expectedCipher: "autokey" },
+  { label: "Beaufort", ciphertext: "AWAWTZCBPKWLDOAWKVNJPMOOKVMBDMYHVKWMKJJKLJOCVKSVLWAXAKMGXQMXZWSWNJWWKVMBDQXMZQNQAAIVVRSBXVIYJVHKVQHKMZIVVQUIVIWBKWAVKPOA", expectedCipher: "beaufort" },
+  { label: "Porta", ciphertext: "RXEKBSYKRCOTCOVJKFRPWIEGKBUZSUJQVJJMRLVJSUJXKVJIREVRFJPLGIYURBJGUWGXCZINGJDVTCYQVCOULATFDXSZKJSCCKKZVCAOVJUUPZYWELBOLXTC", expectedCipher: "porta" },
 
   // ── Transposition ──
-  { label: "Columnar Transposition (key: ZEBRAS)", ciphertext: "EVLNEACDTKESEAQROFOJDEIEAAEVLNEACDTKESEAQROFOJ", expectedCipher: "columnar" },
+  { label: "Columnar Transposition", ciphertext: "TSRPTOIEEIMABMOHDHHPYUITLTFTPNEAWTOEBPILAAHOIOTNRMIEREISLVBERSRTCKUMAARGSNALREITOHHCEC", expectedCipher: "columnar" },
 
   // ── Polygraphic Substitution ──
-  { label: "Playfair (key: MONARCHY)", ciphertext: "BMODZBXDNABEKUDMUIXMMOUVIFBMODZBXDNABEKUDMUIXMMOUVIF", expectedCipher: "playfair" },
-  { label: "Hill (matrix key)", ciphertext: "POHPOHPOHPOHPOHPOHPOHPOHPOHPOHPOHPOH", expectedCipher: "hill" },
-  { label: "Four-Square (keys: EXAMPLE, KEYWORD)", ciphertext: "FYGMKDFYGMKDFYGMKDFYGMKDFYGMKDFYGMKD", expectedCipher: "foursquare" },
+  { label: "Playfair", ciphertext: "FISIBUCUCAFCMHDUOTKCRTDFOHMHADQDPTRMODAPYGLLPCDETOEBUBACNAQPDQDEILQBZATWLARGDEDQCQDUSIHTDNQPDTEFAEONOHNSGIOHIFAC", expectedCipher: "playfair" },
+  { label: "Hill", ciphertext: "SAHEZZOOKRPWLFAWVDJGHHAGOONQRIZMUPJBWKFXPUPQMEZDHWNKJPZXWMHMYHJGVEIYSSNAPQNZNPCUFYFXNHPWVWWPTCIEYVZV", expectedCipher: "hill" },
+  { label: "Four-Square", ciphertext: "BLMYSIIGBQSTBKBQAZEAISAPMPCVBULILAHDFIUBPUUCTMPBQBUCCNBUAKIFEDUCISILBPNTQDISEETXPAQDIDBPOGLCECWRAZBZNIBUTUESTRQNDFACHAIT", expectedCipher: "foursquare" },
 
   // ── Fractionating ──
-  { label: "Bifid (Polybius-based)", ciphertext: "UAEOLWRINSUAEOLWRINSUAEOLWRINSUAEOLWRINS", expectedCipher: "bifid" },
-  { label: "Trifid (3D cube)", ciphertext: "ZLSJGNAETHRIHZLSJGNAETHRIHZLSJGNAETHRIH", expectedCipher: "trifid" },
-  { label: "ADFGX (WWI German cipher)", ciphertext: "FAXDFADDDGDGFFFAFAXAFAXFAXDFADDDGDGFFFAFAXAFAX", expectedCipher: "adfgx" },
-  { label: "ADFGVX (extended with digits)", ciphertext: "DGDDDAGDDGAFADDFDADVDVFAADVXDGDDDAGDDGAFADDFDADVDVFAADVX", expectedCipher: "adfgvx" },
-  { label: "Nihilist (numeric pairs)", ciphertext: "365553446436654436555344643665443655534464366544", expectedCipher: "nihilist" },
-  { label: "Polybius Square (digit output)", ciphertext: "23153131342315313134231531313423153131342315313134", expectedCipher: "polybius" },
+  { label: "Bifid", ciphertext: "MARPQMFVNPQARBITMLRPGHAFSLMMLQICFCTIHTADTOIHHWTDNAVNLRSLDFBDTLXLHSAORSVCAYLRVTPDHQSXSIYZTCUXSKBBFXBUTTNUDPKIOMDUPOKXBVXB", expectedCipher: "bifid" },
+  { label: "Trifid", ciphertext: "JGRFZLHNUMAQVGSPWWFSNANZVOIMBHWFVSIRMSNVGRNNUCZIWMTGMEAISSPATLEMZKHQBHIRXFRXMVGMGUIEYVAIESFSPRLTJRAQNGPAHAQY", expectedCipher: "trifid" },
+  { label: "ADFGX", ciphertext: "FGGFGFDGADFAAXGFGXDADAAXGDDGFFDDFGDAGFDGFDGXFAAAGGDGFGFFGFDGGGGDGXFFGFXDDFDGFAAXGGGDXGDGFFDDGGFGFAAXAAGDFF", expectedCipher: "adfgx" },
+  { label: "ADFGVX", ciphertext: "DDDFDADDDXVAAVAXAXAVAFGDDFGGAVDFFDGDDDAVGADFFAFGDXDFAXDFAVAGGGAVFXGADFFFFDGDDDAVVAGVAVFXAV", expectedCipher: "adfgvx" },
+  { label: "Nihilist", ciphertext: "264543076345673717555224756403446546435552247142444454652454276306203144324040276420505445654541241545712546402644263424", expectedCipher: "nihilist" },
+  { label: "Polybius Square", ciphertext: "040223223233310013223323223113321413323312042322044104202002232233132234044113331210233133121332003133130220040104020034", expectedCipher: "polybius" },
 
   // ── Modern Block Ciphers (hex output) ──
-  { label: "TEA (Tiny Encryption Algorithm)", ciphertext: "A1B2C3D4E5F60718293A4B5C6D7E8F90A1B2C3D4E5F60718", expectedCipher: "tea" },
-  { label: "XTEA (Extended TEA)", ciphertext: "B2C3D4E5F6071829F0E1D2C3B4A59687B2C3D4E5F6071829", expectedCipher: "xtea" },
-  { label: "Lucifer (IBM precursor to DES)", ciphertext: "A1B2C3D4E5F60718FEDCBA9876543210A1B2C3D4E5F60718", expectedCipher: "lucifer" },
-  { label: "LOKI (Australian DES alternative)", ciphertext: "C3D4E5F6071829305B5A57676A56676EC3D4E5F607182930", expectedCipher: "loki" },
-  { label: "MISTY1 (Mitsubishi cipher)", ciphertext: "D4E5F60718293A4B00112233445566778899AABBCCDDEEFF", expectedCipher: "misty1" },
+  { label: "TEA", ciphertext: "94cb8f37157fc643a85942ef083812aa12d3d68793a94614e7ceb52dd20a0c2d39b99e6bd46b4e251488", expectedCipher: "tea" },
+  { label: "XTEA", ciphertext: "db9747f89b0964ae9b4d85f8cf2201640f8d648dd78b07f8bf883f22ceb515d9c61ee3df7d59e74756eb36a9f152d209", expectedCipher: "xtea" },
+  { label: "Lucifer", ciphertext: "52594e41495248545245544d4f4145454f4f4554464148554955504e4f4e4c4155555756555245435044454148524f544f4f534e4f4f484e54455457", expectedCipher: "lucifer" },
+  { label: "LOKI", ciphertext: "b1312909e735670cf46f0c352d0c292d2d631435637f35635214674ecc10a1730037de711360481314421b6352143349c633f50433198fed5f78", expectedCipher: "loki" },
+  { label: "MISTY1", ciphertext: "3e2922e3683014293eff22f1c7ffff2206c75ac745d53eff304c304c6fe3c73e45c7f129ff61c74561293e0dff22f12922c7303e2906e3d54c4cf8c7", expectedCipher: "misty1" },
 ];

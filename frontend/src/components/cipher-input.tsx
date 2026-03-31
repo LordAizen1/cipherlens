@@ -13,8 +13,10 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useCipherStore } from "@/hooks/use-cipher-store";
 import { predictCipher } from "@/lib/api";
 import { EXAMPLE_CIPHERTEXTS } from "@/lib/constants";
-import { Eraser, FlaskConical, Loader2, Layers, BrainCircuit, GitBranch, Lightbulb } from "lucide-react";
+import { Eraser, FlaskConical, Loader2, Layers, BrainCircuit, GitBranch, Lightbulb, Info, ChevronDown, ChevronUp } from "lucide-react";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { toast } from "sonner";
+import { useState } from "react";
 
 export function CipherInput() {
   const {
@@ -27,6 +29,8 @@ export function CipherInput() {
     setResult,
   } = useCipherStore();
 
+  const [showAdvanced, setShowAdvanced] = useState(false);
+  const [exampleKey, setExampleKey] = useState(0);
   const charCount = ciphertext.replace(/\s/g, "").length;
 
   async function handleAnalyze() {
@@ -82,44 +86,79 @@ export function CipherInput() {
           />
           <div className="flex items-center justify-between text-xs text-muted-foreground">
             <span>{charCount} characters</span>
-            {charCount > 0 && charCount < 5 && (
+            {charCount > 0 && charCount < 5 ? (
               <span className="text-destructive">Minimum 5 characters</span>
-            )}
+            ) : charCount >= 5 && charCount < 100 ? (
+              <span className="text-yellow-600 dark:text-yellow-500">100+ chars recommended for best accuracy</span>
+            ) : null}
           </div>
         </div>
 
-        {/* Model type selector */}
-        <div className="space-y-1.5">
-          <label className="text-xs font-medium text-muted-foreground">Model Engine</label>
-          <Select value={modelType} onValueChange={(v) => setModelType(v as "hierarchical" | "deep_learning" | "hybrid")}>
-            <SelectTrigger className="w-full">
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="hybrid">
-                <div className="flex items-center gap-2">
-                  <Layers className="h-3.5 w-3.5" />
-                  Hybrid CNN — Char + Features (82% acc)
-                </div>
-              </SelectItem>
-              <SelectItem value="deep_learning">
-                <div className="flex items-center gap-2">
-                  <BrainCircuit className="h-3.5 w-3.5" />
-                  CNN Deep Learning (71% acc)
-                </div>
-              </SelectItem>
-              <SelectItem value="hierarchical">
-                <div className="flex items-center gap-2">
-                  <GitBranch className="h-3.5 w-3.5" />
-                  XGBoost + Soft-Routing (76% acc)
-                </div>
-              </SelectItem>
-            </SelectContent>
-          </Select>
+        {/* Advanced: Model type selector */}
+        <div>
+          <button
+            type="button"
+            onClick={() => setShowAdvanced(!showAdvanced)}
+            className="flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground transition-colors"
+          >
+            {showAdvanced ? <ChevronUp className="h-3 w-3" /> : <ChevronDown className="h-3 w-3" />}
+            Advanced
+            {modelType !== "hybrid" && (
+              <span className="ml-1 rounded bg-muted px-1.5 py-0.5 text-[10px]">
+                {modelType === "deep_learning" ? "CNN DL" : "XGBoost"}
+              </span>
+            )}
+          </button>
+          {showAdvanced && (
+            <div className="mt-2 space-y-1.5">
+              <div className="flex items-center gap-1.5">
+                <label className="text-xs font-medium text-muted-foreground">Model Engine</label>
+                <TooltipProvider delayDuration={200}>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <Info className="h-3 w-3 text-muted-foreground cursor-help" />
+                    </TooltipTrigger>
+                    <TooltipContent side="right" className="max-w-[280px] text-xs">
+                      <p className="font-semibold mb-1">Choose a prediction model:</p>
+                      <p><span className="font-medium">Hybrid CNN</span> — Combines raw character patterns with statistical features. Best overall accuracy.</p>
+                      <p className="mt-1"><span className="font-medium">CNN Deep Learning</span> — Reads character sequences directly. Best for numeric ciphers like Polybius.</p>
+                      <p className="mt-1"><span className="font-medium">XGBoost</span> — Uses statistical features with a two-stage family→cipher pipeline. Fast and interpretable.</p>
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
+              </div>
+              <Select value={modelType} onValueChange={(v) => setModelType(v as "hierarchical" | "deep_learning" | "hybrid")}>
+                <SelectTrigger className="w-full">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="hybrid">
+                    <div className="flex items-center gap-2">
+                      <Layers className="h-3.5 w-3.5" />
+                      Hybrid CNN
+                      <span className="rounded bg-primary/10 px-1.5 py-0.5 text-[10px] font-medium text-primary">Recommended</span>
+                    </div>
+                  </SelectItem>
+                  <SelectItem value="deep_learning">
+                    <div className="flex items-center gap-2">
+                      <BrainCircuit className="h-3.5 w-3.5" />
+                      CNN Deep Learning
+                    </div>
+                  </SelectItem>
+                  <SelectItem value="hierarchical">
+                    <div className="flex items-center gap-2">
+                      <GitBranch className="h-3.5 w-3.5" />
+                      XGBoost
+                    </div>
+                  </SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+          )}
         </div>
 
         {/* Example selector */}
-        <Select onValueChange={handleExample}>
+        <Select key={exampleKey} onValueChange={handleExample}>
           <SelectTrigger className="w-full">
             <div className="flex items-center gap-2">
               <Lightbulb className="h-3.5 w-3.5" />
@@ -157,6 +196,7 @@ export function CipherInput() {
             onClick={() => {
               setCiphertext("");
               setResult(null);
+              setExampleKey((k) => k + 1);
             }}
             disabled={charCount === 0}
           >
