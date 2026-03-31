@@ -14,15 +14,18 @@ export interface CipherPrediction {
 }
 
 export interface FeatureSet {
+  length: number;
   entropy: number;
-  ioc: number;
-  chi_square: number;
-  alphabet_size: number;
-  has_spaces: boolean;
-  digit_ratio: number;
-  alpha_ratio: number;
+  compression: number;        // backend field name
   bigram_entropy: number;
   trigram_entropy: number;
+  uniformity: number;
+  unique_ratio: number;       // backend field name
+  transition_var: number;     // backend field name
+  run_length_mean: number;
+  run_length_var: number;     // backend field name
+  ioc: number;
+  ioc_variance: number;
   [key: string]: number | boolean | string;
 }
 
@@ -31,15 +34,22 @@ export interface FeatureImportance {
   importance_score: number;
 }
 
+export interface FamilyPrediction {
+  predicted_family: string;
+  confidence: number;
+}
+
 export interface PredictionResponse {
   request_id: string;
   timestamp: string;
+  family_prediction?: FamilyPrediction;  // optional — not all models return this
   top_prediction: CipherPrediction;
   all_predictions: CipherPrediction[];
   features: FeatureSet;
   feature_importance: FeatureImportance[];
   model_used: "hierarchical" | "unified" | "deep_learning" | "hybrid";
   inference_time_ms: number;
+  low_confidence?: boolean;  // optional
 }
 
 // Static cipher info for the encyclopedia
@@ -72,11 +82,11 @@ export type CipherFamily =
   | "Numeric";
 
 export const FAMILY_COLORS: Record<CipherFamily, string> = {
-  "Monoalphabetic Substitution": "bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400",
-  "Polyalphabetic Substitution": "bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400",
-  "Transposition": "bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400",
-  "Polygraphic Substitution": "bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-400",
-  "Fractionating": "bg-orange-100 text-orange-800 dark:bg-orange-900/30 dark:text-orange-400",
-  "Modern Block": "bg-cyan-100 text-cyan-800 dark:bg-cyan-900/30 dark:text-cyan-400",
-  "Numeric": "bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400",
+  "Monoalphabetic Substitution": "bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-300",
+  "Polyalphabetic Substitution": "bg-blue-200 text-blue-900 dark:bg-blue-900/60 dark:text-blue-300",
+  "Transposition": "bg-green-200 text-green-900 dark:bg-green-900/60 dark:text-green-300",
+  "Polygraphic Substitution": "bg-purple-200 text-purple-900 dark:bg-purple-900/60 dark:text-purple-300",
+  "Fractionating": "bg-orange-200 text-orange-900 dark:bg-orange-900/60 dark:text-orange-300",
+  "Modern Block": "bg-cyan-200 text-cyan-900 dark:bg-cyan-900/60 dark:text-cyan-300",
+  "Numeric": "bg-yellow-200 text-yellow-900 dark:bg-yellow-900/60 dark:text-yellow-300",
 };

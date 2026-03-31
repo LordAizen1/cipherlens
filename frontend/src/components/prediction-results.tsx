@@ -8,7 +8,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { ConfidenceBar } from "@/components/confidence-bar";
 import { useCipherStore } from "@/hooks/use-cipher-store";
 import { FAMILY_COLORS, type CipherFamily } from "@/lib/types";
-import { Trophy, ListOrdered, Clock, Cpu } from "lucide-react";
+import { Trophy, ListOrdered, Clock, Cpu, AlertTriangle, GitBranch } from "lucide-react";
 import { MorphingText } from "@/components/ui/morphing-text";
 import { NumberTicker } from "@/components/ui/number-ticker";
 
@@ -53,7 +53,7 @@ export function PredictionResults() {
     );
   }
 
-  const { top_prediction, all_predictions, model_used, inference_time_ms } = result;
+  const { family_prediction, top_prediction, all_predictions, model_used, inference_time_ms, low_confidence } = result;
   const familyColor =
     FAMILY_COLORS[top_prediction.cipher_family as CipherFamily] || "";
 
@@ -85,27 +85,56 @@ export function PredictionResults() {
             </div>
           </CardHeader>
           <CardContent className="space-y-4">
-            {/* Top prediction */}
-            <div className="rounded-lg border bg-accent/30 p-4">
-              <div className="mb-2 flex items-center justify-between">
-                <div>
-                  <h3 className="text-2xl font-bold">{top_prediction.cipher_name}</h3>
-                  <Badge className={familyColor} variant="secondary">
-                    {top_prediction.cipher_family}
-                  </Badge>
-                </div>
-                <div className="text-right">
-                  <div className="text-3xl font-bold tabular-nums">
-                    <NumberTicker
-                      value={Math.round(top_prediction.confidence * 100)}
-                      className="text-3xl font-bold"
-                    />
-                    <span className="text-lg text-muted-foreground">%</span>
-                  </div>
-                  <span className="text-xs text-muted-foreground">confidence</span>
-                </div>
+            {/* Low confidence warning */}
+            {low_confidence && (
+              <div className="flex items-center gap-2 rounded-lg border border-yellow-500/30 bg-yellow-500/10 p-3 text-sm text-yellow-700 dark:text-yellow-400">
+                <AlertTriangle className="h-4 w-4 shrink-0" />
+                Low confidence — prediction may be unreliable. The input might not be a recognized cipher or may be too short for statistical significance.
               </div>
-              <ConfidenceBar confidence={top_prediction.confidence} size="lg" showLabel={false} />
+            )}
+
+            {/* Two-stage prediction */}
+            <div className="space-y-3">
+              {/* Stage 1: Family (only shown if backend returns it) */}
+              {family_prediction && (
+                <div className="rounded-lg border p-3">
+                  <div className="mb-1 flex items-center gap-2 text-xs text-muted-foreground">
+                    <GitBranch className="h-3 w-3" />
+                    Stage 1 — Family Classification
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <Badge className={familyColor} variant="secondary">
+                      {family_prediction.predicted_family}
+                    </Badge>
+                    <span className="text-sm font-bold tabular-nums">
+                      {Math.round(family_prediction.confidence * 100)}%
+                    </span>
+                  </div>
+                  <ConfidenceBar confidence={family_prediction.confidence} size="sm" showLabel={false} className="mt-2" />
+                </div>
+              )}
+
+              {/* Stage 2: Cipher */}
+              <div className="rounded-lg border bg-accent/30 p-4">
+                <div className="mb-2 flex items-center gap-2 text-xs text-muted-foreground">
+                  <Trophy className="h-3 w-3" />
+                  Stage 2 — Cipher Identification
+                </div>
+                <div className="flex items-center justify-between">
+                  <h3 className="text-2xl font-bold">{top_prediction.cipher_name}</h3>
+                  <div className="text-right">
+                    <div className="text-3xl font-bold tabular-nums">
+                      <NumberTicker
+                        value={Math.round(top_prediction.confidence * 100)}
+                        className="text-3xl font-bold"
+                      />
+                      <span className="text-lg text-muted-foreground">%</span>
+                    </div>
+                    <span className="text-xs text-muted-foreground">confidence</span>
+                  </div>
+                </div>
+                <ConfidenceBar confidence={top_prediction.confidence} size="lg" showLabel={false} />
+              </div>
             </div>
 
             <Separator />

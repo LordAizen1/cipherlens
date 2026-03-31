@@ -4,7 +4,6 @@ import { useState } from "react";
 import { CipherCard } from "@/components/cipher-card";
 import { Badge } from "@/components/ui/badge";
 import { CIPHER_DATA, CIPHER_FAMILIES } from "@/lib/constants";
-import { FAMILY_COLORS, type CipherFamily } from "@/lib/types";
 import { BlurFade } from "@/components/ui/blur-fade";
 
 export default function CiphersPage() {
@@ -38,22 +37,27 @@ export default function CiphersPage() {
           >
             All ({CIPHER_DATA.length})
           </Badge>
-          {CIPHER_FAMILIES.map((family) => {
-            const color =
-              FAMILY_COLORS[family.name as CipherFamily] || "";
+          {CIPHER_FAMILIES.map((family, i) => {
+            const colors = [
+              "bg-red-100 text-red-700 dark:bg-red-950 dark:text-red-400",
+              "bg-blue-100 text-blue-700 dark:bg-blue-950 dark:text-blue-400",
+              "bg-green-100 text-green-700 dark:bg-green-950 dark:text-green-400",
+              "bg-purple-100 text-purple-700 dark:bg-purple-950 dark:text-purple-400",
+              "bg-orange-100 text-orange-700 dark:bg-orange-950 dark:text-orange-400",
+              "bg-cyan-100 text-cyan-700 dark:bg-cyan-950 dark:text-cyan-400",
+              "bg-yellow-100 text-yellow-700 dark:bg-yellow-950 dark:text-yellow-400",
+            ];
+            const isActive = activeFamily === family.slug;
             return (
-              <Badge
+              <button
                 key={family.slug}
-                variant={activeFamily === family.slug ? "default" : "secondary"}
-                className={`cursor-pointer ${activeFamily === family.slug ? "" : color}`}
+                className={`inline-flex items-center rounded-md border border-transparent px-2.5 py-0.5 text-xs font-semibold transition-colors ${colors[i % colors.length]} ${isActive ? "ring-2 ring-offset-2 ring-offset-background ring-foreground/30" : "opacity-75 hover:opacity-100"}`}
                 onClick={() =>
-                  setActiveFamily(
-                    activeFamily === family.slug ? null : family.slug
-                  )
+                  setActiveFamily(isActive ? null : family.slug)
                 }
               >
                 {family.name} ({family.count})
-              </Badge>
+              </button>
             );
           })}
         </div>

@@ -8,28 +8,15 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
-import { useCipherStore } from "@/hooks/use-cipher-store";
-import { BarChart3, Activity, Hash, Type, Sigma } from "lucide-react";
 import {
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  Tooltip,
-  ResponsiveContainer,
-  Cell,
-} from "recharts";
-
-const CHART_COLORS = [
-  "hsl(var(--chart-1))",
-  "hsl(var(--chart-2))",
-  "hsl(var(--chart-3))",
-  "hsl(var(--chart-4))",
-  "hsl(var(--chart-5))",
-  "hsl(var(--chart-1))",
-  "hsl(var(--chart-2))",
-  "hsl(var(--chart-3))",
-];
+  ChartContainer,
+  ChartTooltip,
+  ChartTooltipContent,
+  type ChartConfig,
+} from "@/components/ui/chart";
+import { useCipherStore } from "@/hooks/use-cipher-store";
+import { BarChart3, Activity, Hash, Sigma, Ruler, FileArchive, Shuffle, Binary, Repeat, TrendingUp, Percent } from "lucide-react";
+import { RadarChart, Radar, PolarGrid, PolarAngleAxis, PolarRadiusAxis } from "recharts";
 
 interface MetricCardProps {
   icon: React.ReactNode;
@@ -53,6 +40,13 @@ function MetricCard({ icon, label, value, subtext }: MetricCardProps) {
   );
 }
 
+const radarChartConfig = {
+  value: {
+    label: "Value",
+    color: "hsl(var(--chart-2))",
+  },
+} satisfies ChartConfig;
+
 export function FeatureAnalysis() {
   const { result, isAnalyzing } = useCipherStore();
 
@@ -66,11 +60,10 @@ export function FeatureAnalysis() {
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
-          <div className="grid grid-cols-2 gap-3">
-            <Skeleton className="h-20" />
-            <Skeleton className="h-20" />
-            <Skeleton className="h-20" />
-            <Skeleton className="h-20" />
+          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
+            {Array.from({ length: 12 }).map((_, i) => (
+              <Skeleton key={i} className="h-20" />
+            ))}
           </div>
           <Skeleton className="h-48" />
         </CardContent>
@@ -80,12 +73,20 @@ export function FeatureAnalysis() {
 
   if (!result) return null;
 
-  const { features, feature_importance } = result;
+  const { features } = result;
 
-  const chartData = feature_importance.map((f) => ({
-    name: f.feature_name.replace("_", " "),
-    value: parseFloat((f.importance_score * 100).toFixed(1)),
-  }));
+  // Normalize features for radar chart (0–100 scale)
+  const maxEntropy = 8;
+  const radarData = [
+    { feature: "Entropy",      value: Math.min((features.entropy / maxEntropy) * 100, 100) },
+    { feature: "IoC",          value: Math.min(features.ioc * 1000, 100) },
+    { feature: "Bigram Ent.",  value: Math.min((features.bigram_entropy / 15) * 100, 100) },
+    { feature: "Trigram Ent.", value: Math.min((features.trigram_entropy / 20) * 100, 100) },
+    { feature: "Uniformity",   value: Math.min((features.uniformity / 10) * 100, 100) },
+    { feature: "Compression",  value: features.compression * 100 },
+    { feature: "Symbol Ratio", value: features.unique_ratio * 100 },
+    { feature: "Trans. Var.",  value: Math.min((features.transition_var / 500) * 100, 100) },
+  ];
 
   return (
     <motion.div
@@ -100,14 +101,66 @@ export function FeatureAnalysis() {
             Feature Analysis
           </CardTitle>
         </CardHeader>
-        <CardContent className="space-y-4">
-          {/* Key metrics */}
-          <div className="grid grid-cols-2 gap-3">
+        <CardContent className="space-y-6">
+          {/* Key metrics — 12 PRD features */}
+          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
+            <MetricCard
+              icon={<Ruler className="h-3 w-3" />}
+              label="Length"
+              value={features.length}
+              subtext="characters"
+            />
             <MetricCard
               icon={<Activity className="h-3 w-3" />}
               label="Shannon Entropy"
               value={features.entropy}
               subtext="bits/char"
+            />
+            <MetricCard
+              icon={<FileArchive className="h-3 w-3" />}
+              label="Compression Ratio"
+              value={features.compression}
+              subtext="compressed / original"
+            />
+            <MetricCard
+              icon={<Binary className="h-3 w-3" />}
+              label="Bigram Entropy"
+              value={features.bigram_entropy}
+              subtext="bits/bigram"
+            />
+            <MetricCard
+              icon={<Binary className="h-3 w-3" />}
+              label="Trigram Entropy"
+              value={features.trigram_entropy}
+              subtext="bits/trigram"
+            />
+            <MetricCard
+              icon={<Sigma className="h-3 w-3" />}
+              label="Uniformity"
+              value={features.uniformity}
+              subtext="freq std dev"
+            />
+            <MetricCard
+              icon={<Percent className="h-3 w-3" />}
+              label="Unique Symbol Ratio"
+              value={features.unique_ratio}
+              subtext="unique / total"
+            />
+            <MetricCard
+              icon={<Shuffle className="h-3 w-3" />}
+              label="Transition Variance"
+              value={typeof features.transition_var === "number" ? features.transition_var.toFixed(2) : features.transition_var}
+              subtext="char-to-char"
+            />
+            <MetricCard
+              icon={<Repeat className="h-3 w-3" />}
+              label="Run-Length Mean"
+              value={typeof features.run_length_mean === "number" ? features.run_length_mean.toFixed(2) : features.run_length_mean}
+            />
+            <MetricCard
+              icon={<Repeat className="h-3 w-3" />}
+              label="Run-Length Variance"
+              value={typeof features.run_length_var === "number" ? features.run_length_var.toFixed(4) : features.run_length_var}
             />
             <MetricCard
               icon={<Hash className="h-3 w-3" />}
@@ -116,65 +169,40 @@ export function FeatureAnalysis() {
               subtext={features.ioc > 0.06 ? "≈ monoalphabetic" : "≈ polyalphabetic"}
             />
             <MetricCard
-              icon={<Sigma className="h-3 w-3" />}
-              label="Chi-Square"
-              value={features.chi_square}
-            />
-            <MetricCard
-              icon={<Type className="h-3 w-3" />}
-              label="Alphabet Size"
-              value={features.alphabet_size}
-              subtext={`${(features.alpha_ratio * 100).toFixed(0)}% alpha, ${(features.digit_ratio * 100).toFixed(0)}% digits`}
+              icon={<TrendingUp className="h-3 w-3" />}
+              label="IoC Variance"
+              value={features.ioc_variance}
+              subtext="periodicity measure"
             />
           </div>
 
-          {/* Feature importance chart */}
+          {/* Radar chart — feature profile */}
           <div>
-            <h4 className="mb-2 text-sm font-medium">Feature Importance</h4>
-            {chartData.length > 0 ? (
-              <div className="h-56">
-                <ResponsiveContainer width="100%" height="100%">
-                  <BarChart
-                    data={chartData}
-                    layout="vertical"
-                    margin={{ left: 0, right: 10, top: 5, bottom: 5 }}
-                  >
-                    <XAxis type="number" hide />
-                    <YAxis
-                      type="category"
-                      dataKey="name"
-                      width={120}
-                      tick={{ fontSize: 11, fill: "hsl(var(--foreground))" }}
-                    />
-                    <Tooltip
-                      formatter={(value) => `${value}%`}
-                      contentStyle={{
-                        borderRadius: "8px",
-                        border: "1px solid hsl(var(--border))",
-                        backgroundColor: "hsl(var(--card))",
-                        color: "hsl(var(--foreground))",
-                      }}
-                    />
-                    <Bar dataKey="value" radius={[0, 4, 4, 0]}>
-                      {chartData.map((_, i) => (
-                        <Cell
-                          key={i}
-                          fill={CHART_COLORS[i % CHART_COLORS.length]}
-                        />
-                      ))}
-                    </Bar>
-                  </BarChart>
-                </ResponsiveContainer>
-              </div>
-            ) : (
-              <div className="flex h-56 flex-col items-center justify-center rounded-md border border-dashed text-center text-sm text-muted-foreground p-6">
-                <Activity className="mb-2 h-8 w-8 opacity-20" />
-                <p>This model processes raw character tokens.</p>
-                <p className="mt-1 text-xs opacity-70">
-                  It uses learned spatial filters rather than relying on extracted statistical features, so explicit mathematical feature importance is not available.
-                </p>
-              </div>
-            )}
+            <h4 className="mb-2 text-sm font-medium">Feature Profile</h4>
+            <ChartContainer config={radarChartConfig} className="mx-auto aspect-square h-[300px]">
+              <RadarChart data={radarData}>
+                <PolarGrid stroke="hsl(var(--border))" />
+                <PolarAngleAxis
+                  dataKey="feature"
+                  tick={{ fontSize: 10, fill: "hsl(var(--muted-foreground))" }}
+                />
+                <PolarRadiusAxis
+                  angle={90}
+                  domain={[0, 100]}
+                  tick={false}
+                  axisLine={false}
+                />
+                <ChartTooltip content={<ChartTooltipContent />} />
+                <Radar
+                  name="value"
+                  dataKey="value"
+                  stroke="hsl(var(--chart-2))"
+                  fill="hsl(var(--chart-2))"
+                  fillOpacity={0.3}
+                  strokeWidth={2}
+                />
+              </RadarChart>
+            </ChartContainer>
           </div>
         </CardContent>
       </Card>
