@@ -12,7 +12,7 @@ import joblib
 
 # Paths
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-DATA_PATH = os.path.join(BASE_DIR, '..', '..', 'cipher_MASTER_FULL_V2.csv')
+DATA_PATH = os.path.join(BASE_DIR, '..', 'data', 'cipher_MASTER_FULL_V3_shuffled.csv')
 MODEL_DIR = os.path.join(BASE_DIR, 'app', 'models')
 
 MAX_LEN = 512

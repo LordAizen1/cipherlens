@@ -99,13 +99,13 @@ export function CipherInput() {
               <SelectItem value="hybrid">
                 <div className="flex items-center gap-2">
                   <Layers className="h-3.5 w-3.5" />
-                  Hybrid CNN — Char + Features (87% acc)
+                  Hybrid CNN — Char + Features (82% acc)
                 </div>
               </SelectItem>
               <SelectItem value="deep_learning">
                 <div className="flex items-center gap-2">
                   <BrainCircuit className="h-3.5 w-3.5" />
-                  CNN Deep Learning (63% acc)
+                  CNN Deep Learning (71% acc)
                 </div>
               </SelectItem>
               <SelectItem value="hierarchical">
