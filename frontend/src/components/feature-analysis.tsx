@@ -25,6 +25,10 @@ interface MetricCardProps {
   subtext?: string;
 }
 
+function fmt(value: number, decimals = 4): string {
+  return parseFloat(value.toFixed(decimals)).toString();
+}
+
 function MetricCard({ icon, label, value, subtext }: MetricCardProps) {
   return (
     <div className="rounded-lg border p-3">
@@ -32,9 +36,9 @@ function MetricCard({ icon, label, value, subtext }: MetricCardProps) {
         {icon}
         {label}
       </div>
-      <div className="text-xl font-bold tabular-nums">{value}</div>
+      <div className="truncate text-lg font-bold tabular-nums">{value}</div>
       {subtext && (
-        <div className="text-xs text-muted-foreground">{subtext}</div>
+        <div className="truncate text-xs text-muted-foreground">{subtext}</div>
       )}
     </div>
   );
@@ -113,37 +117,37 @@ export function FeatureAnalysis() {
             <MetricCard
               icon={<Activity className="h-3 w-3" />}
               label="Shannon Entropy"
-              value={features.entropy}
+              value={fmt(features.entropy)}
               subtext="bits/char"
             />
             <MetricCard
               icon={<FileArchive className="h-3 w-3" />}
               label="Compression Ratio"
-              value={features.compression}
+              value={fmt(features.compression)}
               subtext="compressed / original"
             />
             <MetricCard
               icon={<Binary className="h-3 w-3" />}
               label="Bigram Entropy"
-              value={features.bigram_entropy}
+              value={fmt(features.bigram_entropy)}
               subtext="bits/bigram"
             />
             <MetricCard
               icon={<Binary className="h-3 w-3" />}
               label="Trigram Entropy"
-              value={features.trigram_entropy}
+              value={fmt(features.trigram_entropy)}
               subtext="bits/trigram"
             />
             <MetricCard
               icon={<Sigma className="h-3 w-3" />}
               label="Uniformity"
-              value={features.uniformity}
+              value={fmt(features.uniformity)}
               subtext="freq std dev"
             />
             <MetricCard
               icon={<Percent className="h-3 w-3" />}
               label="Unique Symbol Ratio"
-              value={features.unique_ratio}
+              value={fmt(features.unique_ratio)}
               subtext="unique / total"
             />
             <MetricCard
@@ -165,13 +169,13 @@ export function FeatureAnalysis() {
             <MetricCard
               icon={<Hash className="h-3 w-3" />}
               label="Index of Coincidence"
-              value={features.ioc}
+              value={fmt(features.ioc, 6)}
               subtext={features.ioc > 0.06 ? "≈ monoalphabetic" : "≈ polyalphabetic"}
             />
             <MetricCard
               icon={<TrendingUp className="h-3 w-3" />}
               label="IoC Variance"
-              value={features.ioc_variance}
+              value={fmt(features.ioc_variance, 6)}
               subtext="periodicity measure"
             />
           </div>

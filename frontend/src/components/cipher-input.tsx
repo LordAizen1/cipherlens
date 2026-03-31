@@ -13,7 +13,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useCipherStore } from "@/hooks/use-cipher-store";
 import { predictCipher } from "@/lib/api";
 import { EXAMPLE_CIPHERTEXTS } from "@/lib/constants";
-import { Eraser, FlaskConical, Loader2, Sparkles, Brain, Cpu } from "lucide-react";
+import { Eraser, FlaskConical, Loader2, Layers, BrainCircuit, GitBranch, Lightbulb } from "lucide-react";
 import { toast } from "sonner";
 
 export function CipherInput() {
@@ -64,8 +64,6 @@ export function CipherInput() {
     }
   }
 
-  const modelIcon = modelType === "hybrid" ? <Sparkles className="h-3.5 w-3.5" /> : modelType === "deep_learning" ? <Brain className="h-3.5 w-3.5" /> : <Cpu className="h-3.5 w-3.5" />;
-
   return (
     <Card>
       <CardHeader className="pb-3">
@@ -95,27 +93,24 @@ export function CipherInput() {
           <label className="text-xs font-medium text-muted-foreground">Model Engine</label>
           <Select value={modelType} onValueChange={(v) => setModelType(v as "hierarchical" | "deep_learning" | "hybrid")}>
             <SelectTrigger className="w-full">
-              <div className="flex items-center gap-2">
-                {modelIcon}
-                <SelectValue />
-              </div>
+              <SelectValue />
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="hybrid">
                 <div className="flex items-center gap-2">
-                  <Sparkles className="h-3.5 w-3.5" />
-                  Hybrid CNN — Char + Features (87% acc) ✨
+                  <Layers className="h-3.5 w-3.5" />
+                  Hybrid CNN — Char + Features (87% acc)
                 </div>
               </SelectItem>
               <SelectItem value="deep_learning">
                 <div className="flex items-center gap-2">
-                  <Brain className="h-3.5 w-3.5" />
+                  <BrainCircuit className="h-3.5 w-3.5" />
                   CNN Deep Learning (63% acc)
                 </div>
               </SelectItem>
               <SelectItem value="hierarchical">
                 <div className="flex items-center gap-2">
-                  <Cpu className="h-3.5 w-3.5" />
+                  <GitBranch className="h-3.5 w-3.5" />
                   XGBoost + Soft-Routing (76% acc)
                 </div>
               </SelectItem>
@@ -127,7 +122,7 @@ export function CipherInput() {
         <Select onValueChange={handleExample}>
           <SelectTrigger className="w-full">
             <div className="flex items-center gap-2">
-              <Sparkles className="h-3.5 w-3.5" />
+              <Lightbulb className="h-3.5 w-3.5" />
               <SelectValue placeholder="Try an example..." />
             </div>
           </SelectTrigger>

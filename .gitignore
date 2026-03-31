@@ -3,6 +3,7 @@ node_modules/
 __pycache__/
 *.pyc
 .venv/
+backend/cipherlens/        # python venv (created with: python -m venv cipherlens)
 
 # Build outputs
 .next/
@@ -26,3 +27,6 @@ Thumbs.db
 
 # Docker
 *.log
+
+# Temp / scratch files
+data/*_copy.csv

@@ -6,7 +6,7 @@ import joblib
 
 # Paths
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-DATA_PATH = os.path.join(BASE_DIR, '..', '..', 'cipher_MASTER_TRAIN_V2.csv')
+DATA_PATH = os.path.join(BASE_DIR, '..', '..', 'data', 'cipher_MASTER_FULL_V3_shuffled.csv')
 MODEL_DIR = os.path.join(BASE_DIR, 'app', 'models')
 
 def train_models():
@@ -23,7 +23,7 @@ def train_models():
     features = [
         "length", "entropy", "compression", "bigram_entropy", "trigram_entropy",
         "uniformity", "unique_ratio", "transition_var", "run_length_mean",
-        "run_length_var", "ioc", "ioc_variance"
+        "run_length_var", "ioc", "ioc_variance", "digit_ratio", "alpha_ratio"
     ]
     
     X = df[features]

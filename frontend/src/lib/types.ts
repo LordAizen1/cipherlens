@@ -90,3 +90,14 @@ export const FAMILY_COLORS: Record<CipherFamily, string> = {
   "Modern Block": "bg-cyan-200 text-cyan-900 dark:bg-cyan-900/60 dark:text-cyan-300",
   "Numeric": "bg-yellow-200 text-yellow-900 dark:bg-yellow-900/60 dark:text-yellow-300",
 };
+
+// Maps short family names returned by the backend model to full display names
+export const FAMILY_NAME_MAP: Record<string, CipherFamily> = {
+  "mono":          "Monoalphabetic Substitution",
+  "poly":          "Polyalphabetic Substitution",
+  "transposition": "Transposition",
+  "polygraphic":   "Polygraphic Substitution",
+  "fractionating": "Fractionating",
+  "modern":        "Modern Block",
+  "numeric":       "Numeric",
+};

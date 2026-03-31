@@ -7,7 +7,7 @@ import { Separator } from "@/components/ui/separator";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ConfidenceBar } from "@/components/confidence-bar";
 import { useCipherStore } from "@/hooks/use-cipher-store";
-import { FAMILY_COLORS, type CipherFamily } from "@/lib/types";
+import { FAMILY_COLORS, FAMILY_NAME_MAP, type CipherFamily } from "@/lib/types";
 import { Trophy, ListOrdered, Clock, Cpu, AlertTriangle, GitBranch } from "lucide-react";
 import { MorphingText } from "@/components/ui/morphing-text";
 import { NumberTicker } from "@/components/ui/number-ticker";
@@ -54,8 +54,8 @@ export function PredictionResults() {
   }
 
   const { family_prediction, top_prediction, all_predictions, model_used, inference_time_ms, low_confidence } = result;
-  const familyColor =
-    FAMILY_COLORS[top_prediction.cipher_family as CipherFamily] || "";
+  const fullFamilyName = FAMILY_NAME_MAP[top_prediction.cipher_family] ?? top_prediction.cipher_family;
+  const familyColor = FAMILY_COLORS[fullFamilyName as CipherFamily] || "";
 
   return (
     <AnimatePresence mode="wait">
@@ -104,7 +104,7 @@ export function PredictionResults() {
                   </div>
                   <div className="flex items-center justify-between">
                     <Badge className={familyColor} variant="secondary">
-                      {family_prediction.predicted_family}
+                      {FAMILY_NAME_MAP[family_prediction.predicted_family] ?? family_prediction.predicted_family}
                     </Badge>
                     <span className="text-sm font-bold tabular-nums">
                       {Math.round(family_prediction.confidence * 100)}%
