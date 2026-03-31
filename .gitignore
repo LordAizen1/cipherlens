@@ -28,5 +28,5 @@ Thumbs.db
 # Docker
 *.log
 
-# Temp / scratch files
-data/*_copy.csv
+# Data files — too large for git, transfer via scp
+data/
