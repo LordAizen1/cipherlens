@@ -46,7 +46,7 @@ export function CipherInput() {
       const result = await predictCipher({
         ciphertext,
         model_type: modelType,
-        confidence_threshold: 0.05,
+        confidence_threshold: 0.01,
         include_features: true,
       });
       setResult(result);

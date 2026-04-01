@@ -2,7 +2,8 @@
 
 import { CipherInput } from "@/components/cipher-input";
 import { PredictionResults } from "@/components/prediction-results";
-import { FeatureAnalysis } from "@/components/feature-analysis";
+import { FeatureAnalysis, FeatureProfile } from "@/components/feature-analysis";
+import { FeatureImportanceCard } from "@/components/feature-importance";
 import { CipherInfoCard } from "@/components/cipher-info-card";
 import { BlurFade } from "@/components/ui/blur-fade";
 import { useCipherStore } from "@/hooks/use-cipher-store";
@@ -26,7 +27,11 @@ export default function Home() {
 
       <div className="grid gap-6 lg:grid-cols-[400px_1fr]">
         <BlurFade delay={0.2}>
-          <CipherInput />
+          <div className="flex flex-col gap-4">
+            <CipherInput />
+            <FeatureProfile />
+            <CipherInfoCard />
+          </div>
         </BlurFade>
         <BlurFade delay={0.3} className="h-full">
           <div className="flex h-full flex-col gap-4">
@@ -34,7 +39,7 @@ export default function Home() {
               <PredictionResults />
             </div>
             <FeatureAnalysis />
-            <CipherInfoCard />
+            <FeatureImportanceCard />
           </div>
         </BlurFade>
       </div>

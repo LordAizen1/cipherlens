@@ -1,6 +1,6 @@
 # CipherLens — Classical Cipher Identification
 
-A machine learning-powered web application that identifies classical cipher types from ciphertext. Supports **22 cipher types** across **7 cryptographic families**.
+A machine learning-powered web application that identifies classical cipher types from ciphertext. Supports **22 cipher types** across **6 cryptographic families**.
 
 Built as a B.Tech Project (BTP) at IIIT Delhi, 2025-2026.
 
@@ -8,11 +8,11 @@ Built as a B.Tech Project (BTP) at IIIT Delhi, 2025-2026.
 
 | Model | Architecture | Accuracy | Best For |
 |-------|-------------|----------|----------|
-| **Hybrid CNN** | Character CNN + Statistical Features MLP | 82% | Best overall (default) |
-| **CNN Deep Learning** | Character-level 1D CNN | 71% | Numeric ciphers (Polybius) |
-| **XGBoost** | Two-stage family → cipher with soft-routing | 76% | Fast, interpretable |
+| **Hybrid CNN** | Character CNN + Statistical Features MLP | 79.24% | Best overall (default) |
+| **CNN Deep Learning** | Character-level 1D CNN | 68.47% | Numeric ciphers (Polybius) |
+| **XGBoost** | Two-stage family → cipher with soft-routing | — | Fast, interpretable |
 
-All models trained on 330k samples (shuffled `cipher_MASTER_FULL_V3` dataset) with 14 statistical features. See [FINDINGS.md](FINDINGS.md) for detailed evaluation.
+All models trained on 550k samples (`cipher_MASTER_FULL_V4` dataset, MIN_LEN=100) with 15 statistical features. See [FINDINGS.md](FINDINGS.md) for detailed evaluation.
 
 ## Tech Stack
 
@@ -121,8 +121,8 @@ No database needed — the app is stateless. Models are baked into the Docker im
 Models were trained on the IIIT Delhi Precision cluster (H100 MIG GPU). To retrain:
 
 ```bash
-# Shuffle dataset
-python shuffle_dataset.py
+# Generate dataset (cluster recommended)
+python backend/scripts/generate_dataset_v4.py
 
 # Train XGBoost (CPU)
 cd backend && python scripts/train.py

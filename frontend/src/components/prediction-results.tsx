@@ -165,9 +165,11 @@ export function PredictionResults() {
                       <span className="w-24 truncate text-sm font-medium">
                         {pred.cipher_name}
                       </span>
-                      <Badge className={`${predColor} text-[10px] px-1.5 py-0`} variant="secondary">
-                        {predFamily}
-                      </Badge>
+                      <div className="w-36 shrink-0">
+                        <Badge className={`${predColor} text-[10px] px-1.5 py-0`} variant="secondary">
+                          {predFamily}
+                        </Badge>
+                      </div>
                       <ConfidenceBar
                         confidence={pred.confidence}
                         className="flex-1"

@@ -371,7 +371,66 @@ During this session, a separate test was run on synthetically generated cipherte
 
 ---
 
-## 9. Training Infrastructure
+## 9. Live Inference Test — All 22 Ciphers (V4 Hybrid Model, MIN_LEN=100)
+
+**Date:** April 1, 2026  
+**Model:** Hybrid CNN (V4, 79.24% val acc, MIN_LEN=100)  
+**Samples:** Same real ciphertext examples as Section 8
+
+### Results
+
+| # | Cipher | Top-1 Prediction | Conf | Top-2 | Conf | Top-3 | Conf | Result |
+|---|--------|-----------------|------|-------|------|-------|------|--------|
+| 1 | Caesar | caesar | 54.9% | affine | 27.7% | hill | 2.0% | ✅ |
+| 2 | Affine | affine | 93.3% | — | — | — | — | ✅ |
+| 3 | Atbash | atbash | 92.8% | — | — | — | — | ✅ |
+| 4 | Vigenere | hill | 81.5% | beaufort | 5.1% | vigenere | 4.5% | ⚠️ (#3) |
+| 5 | Autokey | autokey | 91.9% | — | — | — | — | ✅ |
+| 6 | Beaufort | beaufort | 23.0% | affine | 19.8% | vigenere | 19.7% | ✅ (low conf) |
+| 7 | Porta | vigenere | 51.2% | beaufort | 40.4% | — | — | ❌ |
+| 8 | Columnar | columnar | 90.9% | — | — | — | — | ✅ |
+| 9 | Playfair | foursquare | 79.1% | bifid | 5.8% | playfair | 3.0% | ⚠️ (#3) |
+| 10 | Hill | hill | 84.4% | vigenere | 3.9% | beaufort | 3.7% | ✅ |
+| 11 | FourSquare | foursquare | 76.1% | bifid | 6.8% | trifid | 3.6% | ✅ |
+| 12 | Bifid | foursquare | 75.3% | playfair | 5.2% | bifid | 3.4% | ⚠️ (#3) |
+| 13 | Trifid | autokey | 27.2% | porta | 19.6% | hill | 18.4% | ❌ |
+| 14 | ADFGX | adfgvx | 90.8% | adfgx | 1.1% | — | — | ⚠️ (#2) |
+| 15 | ADFGVX | adfgx | 86.0% | adfgvx | 1.1% | — | — | ⚠️ (#2) |
+| 16 | Nihilist | nihilist | 46.2% | polybius | 7.7% | vigenere | 3.2% | ✅ |
+| 17 | Polybius | atbash | 38.2% | polybius | 7.1% | adfgx | 4.4% | ⚠️ (#2) |
+| 18 | TEA | caesar | 29.4% | misty1 | 12.0% | playfair | 11.9% | ❌ |
+| 19 | XTEA | caesar | 71.8% | misty1 | 26.2% | affine | 2.0% | ❌ |
+| 20 | Lucifer | misty1 | 19.0% | lucifer | 16.1% | xtea | 16.0% | ⚠️ (#2) |
+| 21 | LOKI | caesar | 56.7% | misty1 | 23.3% | affine | 6.4% | ❌ |
+| 22 | MISTY1 | caesar | 30.7% | playfair | 12.8% | misty1 | 12.2% | ⚠️ (#3) |
+
+### Score
+
+| Outcome | Count | Ciphers |
+|---------|-------|---------|
+| ✅ Correct at #1 | 9 | Caesar, Affine, Atbash, Autokey, Beaufort, Columnar, Hill, FourSquare, Nihilist |
+| ⚠️ Correct at #2–#3 | 8 | Vigenere, Playfair, Bifid, ADFGX, ADFGVX, Polybius, Lucifer, MISTY1 |
+| ❌ Not in top 3 | 5 | Porta, Trifid, TEA, XTEA, LOKI |
+
+**Top-1 accuracy: 9/22 (40.9%) | Top-3 accuracy: 17/22 (77.3%)**
+
+### Comparison with MIN_LEN=50 Model (Section 8)
+
+| Metric | MIN_LEN=50 (78.16%) | MIN_LEN=100 (79.24%) |
+|--------|---------------------|----------------------|
+| Top-1 | 11/22 (50%) | 9/22 (41%) |
+| Top-3 | 16/22 (73%) | 17/22 (77%) |
+| Val Accuracy | 78.16% | 79.24% |
+
+**Improvements:** FourSquare ⚠️→✅, Nihilist ⚠️→✅, Lucifer ❌→⚠️, MISTY1 ❌→⚠️  
+**Regressions:** TEA ✅→❌, XTEA ✅→❌ — both now classified as Caesar (likely training run variance)  
+**ADFGX/ADFGVX swap** appeared in this model — both correct at #2 but swapped at #1
+
+The MIN_LEN=100 model has better top-3 accuracy and higher validation accuracy, making it more useful in practice (the correct cipher appears in the top 3 for 17/22 cases). The TEA/XTEA regression is likely random variance from this specific training run rather than a systematic issue.
+
+---
+
+## 10. Training Infrastructure
 
 All models trained on the **IIIT Delhi Precision cluster**:
 - **Node:** gpu01

@@ -17,7 +17,7 @@ import {
 
 const PIPELINE_STEPS = [
   { icon: <Database className="h-4 w-4" />, label: "Ciphertext Input", desc: "User pastes encrypted text" },
-  { icon: <BarChart3 className="h-4 w-4" />, label: "Feature Extraction", desc: "14 statistical features computed" },
+  { icon: <BarChart3 className="h-4 w-4" />, label: "Feature Extraction", desc: "15 statistical features computed" },
   { icon: <GitBranch className="h-4 w-4" />, label: "Classification", desc: "Hybrid CNN, DL, or XGBoost" },
   { icon: <Target className="h-4 w-4" />, label: "Prediction", desc: "Top 3 ciphers with confidence" },
 ];
@@ -71,17 +71,17 @@ export default function AboutPage() {
             </p>
             <p>
               CipherLens automates this process using machine learning. Given
-              only ciphertext (no plaintext or keys), our models extract 14
+              only ciphertext (no plaintext or keys), our models extract 15
               statistical features and classify the text into one of 22 cipher
-              types across 7 cryptographic families.
+              types across 6 cryptographic families.
             </p>
             <p>
               The system offers three model engines: a{" "}
-              <strong>Hybrid CNN</strong> (82% acc) combining character-level
+              <strong>Hybrid CNN</strong> (79.24% acc) combining character-level
               patterns with statistical features, a <strong>CNN Deep
-                Learning</strong> model (71% acc) reading raw character sequences,
-              and an <strong>XGBoost hierarchical classifier</strong> (76% acc)
-              using a two-stage family → cipher pipeline with soft-routing.
+                Learning</strong> model (68.47% acc) reading raw character sequences,
+              and an <strong>XGBoost hierarchical classifier</strong> using a
+              two-stage family → cipher pipeline with soft-routing.
             </p>
           </CardContent>
         </Card>

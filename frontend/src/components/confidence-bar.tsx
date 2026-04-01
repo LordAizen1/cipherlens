@@ -37,7 +37,7 @@ export function ConfidenceBar({
           className={cn("h-full rounded-full", getBarColor(confidence))}
           initial={{ width: 0 }}
           animate={{ width: `${Math.round(confidence * 100)}%` }}
-          transition={{ duration: 0.6, ease: "easeOut" }}
+          transition={{ type: "spring", damping: 60, stiffness: 100 }}
         />
       </div>
       {showLabel && (
