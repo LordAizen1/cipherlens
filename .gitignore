@@ -31,3 +31,7 @@ Thumbs.db
 
 # Data files — too large for git, transfer via scp
 data/
+
+# Trained model files — transfer via scp, not git
+backend/app/models/*.pkl
+backend/app/models/*.pth
