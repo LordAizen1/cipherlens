@@ -33,7 +33,7 @@ from tqdm import tqdm
 # Config
 # ──────────────────────────────────────────────────────────────
 SAMPLES_PER_CIPHER = 25_000
-MIN_LEN = 50
+MIN_LEN = 100
 MAX_LEN = 500
 SEED = 42
 
