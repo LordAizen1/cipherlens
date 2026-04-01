@@ -20,7 +20,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DATA_PATH = os.path.join(BASE_DIR, '..', 'data', 'cipher_MASTER_FULL_V4.csv.gz')
 MODEL_DIR = os.path.join(BASE_DIR, 'app', 'models')
 
-MAX_LEN = 512
+MAX_LEN = 1024
 # Expanded vocabulary: 0=PAD, 1-26=A-Z, 27-36=0-9, 37=SPACE, 38=OTHER
 VOCAB_SIZE = 39
 
