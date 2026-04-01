@@ -106,7 +106,7 @@ export function FeatureAnalysis() {
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-6">
-          {/* Key metrics — 12 PRD features */}
+          {/* Key metrics — 15 features */}
           <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
             <MetricCard
               icon={<Ruler className="h-3 w-3" />}
@@ -177,6 +177,12 @@ export function FeatureAnalysis() {
               label="IoC Variance"
               value={fmt(features.ioc_variance, 6)}
               subtext="periodicity measure"
+            />
+            <MetricCard
+              icon={<TrendingUp className="h-3 w-3" />}
+              label="Kasiski IoC"
+              value={fmt(features.max_kasiski_ioc, 6)}
+              subtext={features.max_kasiski_ioc > 0.055 ? "periodic structure" : "no periodicity"}
             />
           </div>
 

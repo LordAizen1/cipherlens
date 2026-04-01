@@ -115,7 +115,7 @@ class HybridCipherModel:
             features.bigram_entropy, features.trigram_entropy, features.uniformity,
             features.unique_ratio, features.transition_var, features.run_length_mean,
             features.run_length_var, features.ioc, features.ioc_variance,
-            features.digit_ratio, features.alpha_ratio
+            features.digit_ratio, features.alpha_ratio, features.max_kasiski_ioc
         ]], dtype=np.float32)
         feat_arr = self.scaler.transform(feat_arr)
         feat_tensor = torch.tensor(feat_arr, dtype=torch.float32).to(self.device)
@@ -131,7 +131,8 @@ class HybridCipherModel:
         feature_names = [
             "length", "entropy", "compression", "bigram_entropy", "trigram_entropy",
             "uniformity", "unique_ratio", "transition_var", "run_length_mean",
-            "run_length_var", "ioc", "ioc_variance", "digit_ratio", "alpha_ratio"
+            "run_length_var", "ioc", "ioc_variance", "digit_ratio", "alpha_ratio",
+            "max_kasiski_ioc"
         ]
         drops = []
         with torch.no_grad():

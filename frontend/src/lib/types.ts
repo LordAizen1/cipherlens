@@ -26,6 +26,9 @@ export interface FeatureSet {
   run_length_var: number;     // backend field name
   ioc: number;
   ioc_variance: number;
+  digit_ratio: number;
+  alpha_ratio: number;
+  max_kasiski_ioc: number;
   [key: string]: number | boolean | string;
 }
 

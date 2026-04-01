@@ -17,7 +17,7 @@ from tqdm import tqdm
 
 # Paths
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-DATA_PATH = os.path.join(BASE_DIR, '..', 'data', 'cipher_MASTER_FULL_V3_shuffled.csv')
+DATA_PATH = os.path.join(BASE_DIR, '..', 'data', 'cipher_MASTER_FULL_V4.csv.gz')
 MODEL_DIR = os.path.join(BASE_DIR, 'app', 'models')
 
 MAX_LEN = 512
@@ -264,7 +264,8 @@ def train_hybrid(quick_mode=False):
     feature_cols = [
         "length", "entropy", "compression", "bigram_entropy", "trigram_entropy",
         "uniformity", "unique_ratio", "transition_var", "run_length_mean",
-        "run_length_var", "ioc", "ioc_variance", "digit_ratio", "alpha_ratio"
+        "run_length_var", "ioc", "ioc_variance", "digit_ratio", "alpha_ratio",
+        "max_kasiski_ioc"
     ]
 
     if all(c in df.columns for c in feature_cols):

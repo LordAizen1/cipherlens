@@ -103,6 +103,25 @@ def extract_features(cipher: str) -> FeatureSet:
     digit_ratio = sum(1 for c in (text or '') if c.isdigit()) / txt_len
     alpha_ratio = sum(1 for c in (text or '') if c.isalpha()) / txt_len
 
+    # max_kasiski_ioc: best-period average IoC (periods 2-20)
+    # Peaks ~0.065 for polyalphabetic ciphers at their key period
+    # Stays ~0.038 for uniform-output ciphers (Hill, fractionating, modern)
+    if len(work_text) >= 40:
+        best_kasiski = 0.0
+        for period in range(2, 21):
+            slices = [''.join(work_text[i::period]) for i in range(period)]
+            p_iocs = []
+            for s in slices:
+                if len(s) > 1:
+                    fc = Counter(s)
+                    N2 = len(s)
+                    p_iocs.append(sum(v*(v-1) for v in fc.values()) / (N2*(N2-1)))
+            if p_iocs:
+                best_kasiski = max(best_kasiski, float(np.mean(p_iocs)))
+        max_kasiski_ioc = best_kasiski
+    else:
+        max_kasiski_ioc = 0.0
+
     return FeatureSet(
         length=float(total),
         entropy=float(entropy),
@@ -118,4 +137,5 @@ def extract_features(cipher: str) -> FeatureSet:
         ioc_variance=float(ioc_variance),
         digit_ratio=float(digit_ratio),
         alpha_ratio=float(alpha_ratio),
+        max_kasiski_ioc=float(max_kasiski_ioc),
     )

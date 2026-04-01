@@ -30,6 +30,7 @@ class FeatureSet(BaseModel):
     ioc_variance: float
     digit_ratio: float = 0.0
     alpha_ratio: float = 0.0
+    max_kasiski_ioc: float = 0.0
 
 
 class FeatureImportance(BaseModel):
