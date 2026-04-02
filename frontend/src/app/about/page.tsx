@@ -8,6 +8,7 @@ import {
   Users,
   Target,
   ArrowRight,
+  ArrowDown,
   Database,
   BarChart3,
   Cpu,
@@ -97,23 +98,22 @@ export default function AboutPage() {
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-2">
-              {PIPELINE_STEPS.map((step, i) => (
-                <div key={step.label} className="flex items-center gap-2">
-                  <div className="flex items-center gap-2 rounded-lg border p-3 text-sm">
-                    {step.icon}
-                    <div>
-                      <div className="font-medium">{step.label}</div>
-                      <div className="text-xs text-muted-foreground">
-                        {step.desc}
-                      </div>
+            <div className="flex flex-col items-center gap-2 sm:flex-row sm:items-center sm:gap-2">
+              {PIPELINE_STEPS.flatMap((step, i) => [
+                <div key={step.label} className="flex items-center gap-2 rounded-lg border p-3 text-sm">
+                  {step.icon}
+                  <div>
+                    <div className="font-medium">{step.label}</div>
+                    <div className="text-xs text-muted-foreground">
+                      {step.desc}
                     </div>
                   </div>
-                  {i < PIPELINE_STEPS.length - 1 && (
-                    <ArrowRight className="hidden h-4 w-4 shrink-0 text-muted-foreground sm:block" />
-                  )}
-                </div>
-              ))}
+                </div>,
+                ...(i < PIPELINE_STEPS.length - 1 ? [
+                  <ArrowDown key={`d${i}`} className="h-4 w-4 shrink-0 text-muted-foreground sm:hidden" />,
+                  <ArrowRight key={`r${i}`} className="hidden h-4 w-4 shrink-0 text-muted-foreground sm:block" />,
+                ] : []),
+              ])}
             </div>
           </CardContent>
         </Card>
