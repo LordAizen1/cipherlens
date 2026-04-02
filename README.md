@@ -6,11 +6,11 @@ A machine learning web app that identifies **22 classical cipher types** from ra
 
 Built as a B.Tech Project at IIIT Delhi, 2025–2026.
 
-![CipherLens Demo](public/screenshots/demo.png)
+![CipherLens Demo](public/homepage.jpeg)
 
 <p align="center">
-  <img src="public/screenshots/ciphers.png" width="49%" alt="Cipher Encyclopedia" />
-  <img src="public/screenshots/about.png" width="49%" alt="About" />
+  <img src="public/ciphers.jpeg" width="49%" alt="Cipher Encyclopedia" />
+  <img src="public/about.jpeg" width="49%" alt="About" />
 </p>
 
 ---
