@@ -1,6 +1,6 @@
 # Railway configuration
 [build]
-builder = "DOCKER"
+builder = "DOCKERFILE"
 dockerfilePath = "Dockerfile"
 
 [deploy]
