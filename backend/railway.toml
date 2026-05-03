@@ -4,5 +4,6 @@ builder = "DOCKERFILE"
 dockerfilePath = "Dockerfile"
 
 [deploy]
-healthcheckPath = "/api/health"
-healthcheckTimeout = 300
+# Temporarily disabled healthcheck to debug why the app is slow to respond
+# healthcheckPath = "/api/health"
+# healthcheckTimeout = 300
