@@ -9,6 +9,7 @@ import torch.optim as optim
 from torch.utils.data import Dataset, DataLoader
 from sklearn.preprocessing import LabelEncoder
 import joblib
+import wandb
 
 # Paths
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -126,6 +127,25 @@ def train_dl(quick_mode=False):
     criterion = nn.CrossEntropyLoss()
     optimizer = optim.Adam(model.parameters(), lr=0.001)
     
+    wandb.init(
+        entity="kaif22289-indraprastha-institute-of-information-technolo",
+        project="btp",
+        name="dl-cnn-v4",
+        config={
+            "model":      "CipherCNN",
+            "dataset":    "cipher_MASTER_FULL_V4",
+            "num_samples": len(df),
+            "num_classes": num_classes,
+            "max_len":    MAX_LEN,
+            "vocab_size": VOCAB_SIZE,
+            "batch_size": batch_size,
+            "epochs":     epochs,
+            "optimizer":  "Adam",
+            "lr":         0.001,
+        }
+    )
+    wandb.watch(model, log="gradients", log_freq=100)
+
     print(f"Starting Training for {epochs} Epochs...")
     for epoch in range(epochs):
         model.train()
@@ -171,8 +191,18 @@ def train_dl(quick_mode=False):
         
         elapsed = time.time() - start_time
         print(f"Epoch {epoch+1}/{epochs} [{elapsed:.1f}s] - Train Loss: {train_loss:.4f}, Train Acc: {train_acc:.4f} - Val Loss: {val_loss:.4f}, Val Acc: {val_acc:.4f}")
-        
+
+        wandb.log({
+            "epoch":      epoch + 1,
+            "train/loss": train_loss,
+            "train/acc":  train_acc,
+            "val/loss":   val_loss,
+            "val/acc":    val_acc,
+        })
+
     torch.save(model.state_dict(), os.path.join(MODEL_DIR, "cipher_cnn.pth"))
+    wandb.summary["final_val_acc"] = val_acc
+    wandb.finish()
     print("\nPyTorch Model saved to app/models/cipher_cnn.pth!")
 
 if __name__ == "__main__":

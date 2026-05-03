@@ -14,6 +14,7 @@ from sklearn.preprocessing import LabelEncoder, StandardScaler
 from collections import Counter
 import joblib
 from tqdm import tqdm
+import wandb
 
 # Paths
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -326,6 +327,31 @@ def train_hybrid(quick_mode=False):
 
     best_val_acc = 0.0
 
+    wandb.init(
+        entity="kaif22289-indraprastha-institute-of-information-technolo",
+        project="btp",
+        name="hybrid-cnn-v4",
+        config={
+            "model":          "HybridCipherNet",
+            "dataset":        "cipher_MASTER_FULL_V4",
+            "num_samples":    len(df),
+            "num_classes":    num_classes,
+            "num_features":   num_features,
+            "max_len":        MAX_LEN,
+            "vocab_size":     VOCAB_SIZE,
+            "batch_size":     batch_size,
+            "epochs":         epochs,
+            "optimizer":      "AdamW",
+            "lr":             0.001,
+            "weight_decay":   1e-4,
+            "max_lr":         0.003,
+            "scheduler":      "OneCycleLR",
+            "label_smoothing":0.1,
+            "grad_clip":      1.0,
+        }
+    )
+    wandb.watch(model, log="gradients", log_freq=100)
+
     print(f"\nStarting training for {epochs} epochs...")
     epoch_bar = tqdm(range(epochs), desc="Epochs", unit="epoch", position=0)
     for epoch in epoch_bar:
@@ -403,12 +429,24 @@ def train_hybrid(quick_mode=False):
                    f"Val: loss={val_loss_avg:.4f} acc={val_acc:.4f} | "
                    f"LR: {lr_now:.6f}")
 
+        wandb.log({
+            "epoch":       epoch + 1,
+            "train/loss":  train_loss,
+            "train/acc":   train_acc,
+            "val/loss":    val_loss_avg,
+            "val/acc":     val_acc,
+            "lr":          lr_now,
+        })
+
         # Save best model
         if val_acc > best_val_acc:
             best_val_acc = val_acc
             torch.save(model.state_dict(), os.path.join(MODEL_DIR, "hybrid_cnn.pth"))
             tqdm.write(f"  ✅ New best val_acc={val_acc:.4f} — model saved!")
+            wandb.summary["best_val_acc"] = best_val_acc
+            wandb.summary["best_epoch"]   = epoch + 1
 
+    wandb.finish()
     print(f"\nTraining complete! Best validation accuracy: {best_val_acc:.4f}")
     print(f"Model saved to {os.path.join(MODEL_DIR, 'hybrid_cnn.pth')}")
 
