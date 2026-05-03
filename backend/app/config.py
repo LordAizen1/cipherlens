@@ -8,10 +8,6 @@ class Settings(BaseSettings):
     APP_NAME: str = "CipherLens API"
     ENVIRONMENT: str = "development"
     DEBUG: bool = True
-    CORS_ORIGINS: list[str] = [
-        "http://localhost:3000",
-        "https://cipherlens.vercel.app",
-    ]
     # Point to the models directory next to config.py
     MODEL_DIR: str = os.path.join(BASE_DIR, "models")
     USE_MOCK_MODEL: bool = False
