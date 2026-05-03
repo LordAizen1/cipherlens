@@ -4,6 +4,6 @@ builder = "DOCKERFILE"
 dockerfilePath = "Dockerfile"
 
 [deploy]
-# Temporarily disabled healthcheck to debug why the app is slow to respond
-# healthcheckPath = "/api/health"
-# healthcheckTimeout = 300
+healthcheckPath = "/api/health"
+healthcheckTimeout = 120
+restartPolicyType = "ON_FAILURE"
