@@ -112,10 +112,15 @@ class HierarchicalCipherModel(CipherModel):
 
 _cached_model = None
 
-def get_model(use_mock: bool = False, model_dir: str = "app/models") -> CipherModel:
+def get_model(use_mock: bool = False, model_dir: str = None) -> CipherModel:
     global _cached_model
     if _cached_model is not None:
         return _cached_model
+
+    if model_dir is None:
+        # Find models folder relative to this file: ../models
+        current_dir = os.path.dirname(os.path.abspath(__file__))
+        model_dir = os.path.join(os.path.dirname(current_dir), "models")
 
     _cached_model = HierarchicalCipherModel(model_dir=model_dir)
     return _cached_model

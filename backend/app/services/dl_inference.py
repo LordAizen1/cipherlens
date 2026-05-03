@@ -100,10 +100,15 @@ class DeepLearningCipherModel:
 
 _cached_dl_model = None
 
-def get_dl_model(model_dir: str = "app/models") -> DeepLearningCipherModel:
+def get_dl_model(model_dir: str = None) -> DeepLearningCipherModel:
     global _cached_dl_model
     if _cached_dl_model is not None:
         return _cached_dl_model
+
+    if model_dir is None:
+        # Find models folder relative to this file: ../models
+        current_dir = os.path.dirname(os.path.abspath(__file__))
+        model_dir = os.path.join(os.path.dirname(current_dir), "models")
 
     _cached_dl_model = DeepLearningCipherModel(model_dir=model_dir)
     return _cached_dl_model

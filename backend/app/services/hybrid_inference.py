@@ -191,9 +191,15 @@ class HybridCipherModel:
 _cached_hybrid = None
 
 
-def get_hybrid_model(model_dir: str = "app/models") -> HybridCipherModel:
+def get_hybrid_model(model_dir: str = None) -> HybridCipherModel:
     global _cached_hybrid
     if _cached_hybrid is not None:
         return _cached_hybrid
+    
+    if model_dir is None:
+        # Find models folder relative to this file: ../models
+        current_dir = os.path.dirname(os.path.abspath(__file__))
+        model_dir = os.path.join(os.path.dirname(current_dir), "models")
+        
     _cached_hybrid = HybridCipherModel(model_dir=model_dir)
     return _cached_hybrid

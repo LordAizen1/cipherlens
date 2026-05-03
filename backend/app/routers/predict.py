@@ -22,14 +22,14 @@ async def predict(request: PredictionRequest):
     features = extract_features(request.ciphertext)
 
     if request.model_type == "deep_learning":
-        dl_model = get_dl_model(model_dir=settings.MODEL_DIR)
+        dl_model = get_dl_model()
         predictions, importances, inference_ms = dl_model.predict(
             ciphertext=request.ciphertext,
             features=features,
             model_type=request.model_type,
         )
     elif request.model_type == "hybrid":
-        hybrid_model = get_hybrid_model(model_dir=settings.MODEL_DIR)
+        hybrid_model = get_hybrid_model()
         predictions, importances, inference_ms = hybrid_model.predict(
             ciphertext=request.ciphertext,
             features=features,
@@ -38,7 +38,6 @@ async def predict(request: PredictionRequest):
     else:
         model = get_model(
             use_mock=settings.USE_MOCK_MODEL,
-            model_dir=settings.MODEL_DIR,
         )
         predictions, importances, inference_ms = model.predict(
             ciphertext=request.ciphertext,
