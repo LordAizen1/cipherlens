@@ -1,5 +1,8 @@
+import os
 from pydantic_settings import BaseSettings
 
+# Base directory of the app (where config.py is)
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 class Settings(BaseSettings):
     APP_NAME: str = "CipherLens API"
@@ -9,7 +12,8 @@ class Settings(BaseSettings):
         "http://localhost:3000",
         "https://cipherlens.vercel.app",
     ]
-    MODEL_DIR: str = "app/models"
+    # Point to the models directory next to config.py
+    MODEL_DIR: str = os.path.join(BASE_DIR, "models")
     USE_MOCK_MODEL: bool = False
 
     class Config:
