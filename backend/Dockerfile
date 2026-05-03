@@ -10,4 +10,4 @@ WORKDIR /app
 COPY --from=builder /install /usr/local
 COPY . .
 EXPOSE 8000
-CMD ["sh", "-c", "gunicorn app.main:app -k uvicorn.workers.UvicornWorker -b 0.0.0.0:${PORT:-8000} --workers 1"]
+CMD ["sh", "-c", "uvicorn app.main:app --host 0.0.0.0 --port ${PORT:-8000} --log-level debug"]
